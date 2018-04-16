@@ -7,7 +7,7 @@
     <dimen name="fourty_five">45dp</dimen>
     <dimen name="five">5dp</dimen>
     <dimen name="arrow">35dp</dimen>
-    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_20">20sp</dimen>
     <dimen name="detail_bottom_margin">10dp</dimen>
     <dimen name="five_dp">10dp</dimen>
     <dimen name="one_twenty">120dp</dimen>
@@ -21,6 +21,11 @@
     <dimen name="margin_300">300dp</dimen>
     <dimen name="margin_m10">10dp</dimen>
     <dimen name="margin_m5">-5dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 
 </resources>

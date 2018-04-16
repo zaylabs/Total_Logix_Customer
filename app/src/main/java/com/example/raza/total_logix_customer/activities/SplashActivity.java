@@ -1,15 +1,15 @@
-package com.example.raza.total_logix_customer.Activities;
+package com.example.raza.total_logix_customer.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.raza.total_logix_customer.R;
 
-public class ForgetPasswordActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forget_password);
+        setContentView(R.layout.activity_splash);
     }
 }

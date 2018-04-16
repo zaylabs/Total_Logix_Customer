@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "435716523665",
+    "firebase_url": "https://zaylabsapp.firebaseio.com",
+    "project_id": "zaylabsapp",
+    "storage_bucket": "zaylabsapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435716523665:android:824600c458ffc537",
+        "android_client_info": {
+          "package_name": "com.example.raza.total_logix_customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435716523665-qalkjtelqd8ugvjp18mhqfavlj51mll2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.raza.total_logix_customer",
+            "certificate_hash": "d8f7f6a28f12fd60439d329ca26fd4be057d07c5"
+          }
+        },
+        {
+          "client_id": "435716523665-51rmfrk6mi4lu39nkie0pfg3v6ppjqig.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY0ZjyIWWTXMuPMia8kCr1sh0I57VRQBg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "435716523665-51rmfrk6mi4lu39nkie0pfg3v6ppjqig.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
