@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity
 
     protected GeoDataClient mGeoDataClient;
     private PlaceAutocompleteAdapter mAdapter;
-    private AutoCompleteTextView mPickupText, mDropOffText;
+    public AutoCompleteTextView mPickupText, mDropOffText;
     public String mPickupAddress, mDropoffAddress;
     private TextView mPickUpDetailsText;
     private TextView mPickUpAttribution;
@@ -371,7 +371,18 @@ public class HomeActivity extends AppCompatActivity
 
         //**************************************Location update End ****************************8
 
-
+        mRideNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ((mPickupText.getText()!=null)&&(mDropOffText.getText()!=null)){
+                    Intent intent = new Intent(HomeActivity.this, CurrentRideActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else{
+                    Toast.makeText(HomeActivity.this,"Kindly choose Pickup and Drop Location",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
     }

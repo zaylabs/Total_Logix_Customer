@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="cargotype">
+        <item>Dry Items</item>
+        <item>Food</item>
+        <item>Raw Material</item>
+    </array>
+
+</resources>
