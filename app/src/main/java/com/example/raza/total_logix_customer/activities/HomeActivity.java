@@ -35,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,7 +100,8 @@ public class HomeActivity extends AppCompatActivity
     private Place mPlacePickup, mPlaceDrop;
     public FrameLayout mHeader;
     public FrameLayout mFooter;
-    private TextView mRideNow;
+    private LinearLayout mRideNow;
+    private LinearLayout mBookNow;
     private GoogleApiClient mGoogleApiClient;
 
     protected GeoDataClient mGeoDataClient;
@@ -195,7 +197,7 @@ public class HomeActivity extends AppCompatActivity
     private TextView mNameField;
     private ImageView  mMyLocation, mClear;
     private de.hdodenhof.circleimageview.CircleImageView mDisplayPic;
-    public TextView mDistancetoPass;
+
     public double lat, lng;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -216,8 +218,9 @@ public class HomeActivity extends AppCompatActivity
         mClear = findViewById(R.id.clear);
 
         mFooter = findViewById(R.id.footerframe);
-        mRideNow = findViewById(R.id.request_rides);
-        mDistancetoPass=findViewById(R.id.distance_textview);
+        mRideNow = findViewById(R.id.linear_request);
+        mBookNow = findViewById(R.id.linear_booking);
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -305,7 +308,7 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 mDropOffText.setText("");
-                mDistancetoPass.setText("");
+
 
             }
 
@@ -367,7 +370,7 @@ public class HomeActivity extends AppCompatActivity
 
 
         //**************************************Location update End ****************************8
-        mDistancetoPass.setText("");
+
 
 
 
@@ -707,7 +710,7 @@ public class HomeActivity extends AppCompatActivity
                 mDropMarker = mMap.addMarker(new MarkerOptions().position(mDropLatLng)
                         .title(drop.getName().toString()).draggable(true));
                 mdistanceinKM=distanceInKM();
-                mDistancetoPass.setText(mdistanceinKM);
+
                 Toast.makeText(HomeActivity.this, "Distance in KM " + mdistanceinKM, Toast.LENGTH_SHORT).show();
                 // Display the third party attributions if set.
                 final CharSequence thirdPartyAttribution = places.getAttributions();
