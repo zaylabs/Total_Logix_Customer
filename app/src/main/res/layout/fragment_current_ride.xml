@@ -4,124 +4,288 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.currentRideFragment">
-
-    <RelativeLayout
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/number_of_boxes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Number Of Boxes"
-        android:textSize="30sp"
-        android:gravity="center_horizontal"
+        android:layout_height="130dp">
 
-        android:layout_alignParentStart="true"
-        />
+    </com.google.android.gms.maps.MapView>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/scrollviewrequest"
+    android:layout_below="@id/mapview"
+    >
 
-    <TextView
-        android:id="@+id/weight"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Weight"
-        android:textSize="30sp"
-        android:gravity="center_horizontal"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/number_of_boxes"
-        />
-
-    <TextView
-        android:id="@+id/discription"
+    <LinearLayout
+        android:background="@color/white"
+        android:id="@+id/linear_child1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Discription"
-        android:textSize="30sp"
-        android:gravity="center_horizontal"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/weight"
-        />
+        android:layout_below="@+id/scrollviewrequest"
+         android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/driverloading"
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pick_up_location"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/txt_pickup"
+                    android:layout_width="230dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/drop_location"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/txt_drop"
+                    android:layout_width="230dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_km"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/txt_distanceinKM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number_of_boxes"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <Spinner
+                    android:id="@+id/number_Boxes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:autofillHints="@string/number_of_boxes"
+                    />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weight"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <Spinner
+                    android:id="@+id/weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:layout_marginStart="180dp"
+                    />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cargo_info"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <Spinner
+                    android:id="@+id/discription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+
+                    />
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vahicle_type"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/txt_vt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </TableRow>
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/driver_loading"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/txt_driverloading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fare_estimate"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/txt_fare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </TableRow>
+
+        </TableLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/title"
+            android:background="@color/liner" />
+
+    </LinearLayout>
+</ScrollView>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Driver Loading"
-        android:textSize="30sp"
-        android:gravity="center_horizontal"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/discription"
-        />
+        android:layout_below="@+id/scrollviewrequest"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-        <TextView
-            android:id="@+id/vt"
-            android:layout_width="match_parent"
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="VahicleType"
-            android:textSize="30sp"
-            android:gravity="center_horizontal"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/driverloading"
-            />
-        <TextView
-            android:id="@+id/estimated_fare"
-            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_marginTop="10dp"
+
+            android:layout_weight="1"
+            android:background="@drawable/ripple_effect"
+            android:text="@string/cancel" />
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_confirm"
+            style="@style/Base.TextAppearance.AppCompat.Widget.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="EstimatedFare"
-            android:textSize="30sp"
-            android:gravity="center_horizontal"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/vt"
-            />
-        <TextView
-            android:id="@+id/pickuplocationsubmit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="PickupLocation"
-            android:textSize="30sp"
-            android:gravity="center_horizontal"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/estimated_fare"
-            />
-        <TextView
-            android:id="@+id/droplocationsubmit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Drop Location"
-            android:textSize="30sp"
-            android:gravity="center_horizontal"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/pickuplocationsubmit"
-            />
-        <TextView
-            android:id="@+id/distanceinkm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="DistanceInKM"
-            android:textSize="30sp"
-            android:gravity="center_horizontal"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/droplocationsubmit"
-            />
+            android:layout_margin="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_effect"
+            android:text="@string/confirm" />
+    </LinearLayout>
 
 
 
-        <Button
-        android:id="@+id/enter_info"
-        android:layout_width="187dp"
-        android:layout_height="46dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="46dp"
-        android:text="Cargo Info" />
 
-    </RelativeLayout>
+
+
+</RelativeLayout>
+
 
 </FrameLayout>

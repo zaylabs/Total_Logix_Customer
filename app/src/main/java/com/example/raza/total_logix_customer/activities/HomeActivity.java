@@ -3,6 +3,7 @@ package com.example.raza.total_logix_customer.activities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -15,7 +16,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -32,17 +32,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.raza.total_logix_customer.BuildConfig;
+import com.example.raza.total_logix_customer.DTO.homeinfoPass;
 import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.adapters.HttpDataHandler;
 import com.example.raza.total_logix_customer.adapters.PlaceAutocompleteAdapter;
+import com.example.raza.total_logix_customer.fragment.currentRideFragment;
 import com.example.raza.total_logix_customer.support_classes.PermissionUtils;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -85,16 +93,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import static android.view.View.GONE;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,OnMapReadyCallback,ActivityCompat.OnRequestPermissionsResultCallback {
 
-    public String mdistanceinKM;
+
+    public String mdistancekm;
+
     public android.support.v4.app.FragmentManager sFm = getSupportFragmentManager();
 
     private Place mPlacePickup, mPlaceDrop;
@@ -125,6 +135,7 @@ public class HomeActivity extends AppCompatActivity
     public GoogleMap mMap;
     public SupportMapFragment sMapFragment;
     public String mDropName;
+
 
     private String userID;
     private FirebaseAuth mAuth;
@@ -199,8 +210,24 @@ public class HomeActivity extends AppCompatActivity
     private de.hdodenhof.circleimageview.CircleImageView mDisplayPic;
 
     public double lat, lng;
-    private DrawerLayout drawer;
+    public DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
+    private homeinfoPass pass;
+    private Spinner mNoOfBoxes_et, mWeight_et, mDescription_et;
+    private RadioGroup mRadioGroup;
+    private RadioButton mCarType1;
+    private RadioButton mCarType2;
+    private CheckBox mDriverLoading_et;
+    public String mDriverLoading;
+    public String vt;
+    private int SuzukiRate;
+    private int RikshaRate;
+    private int SuzukiBase;
+    private int RikshaBase;
+    private int DriverLoadingRate;
+    public String FareEstimate;
+    public String mPickupString;
+    public String mDropString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -220,6 +247,61 @@ public class HomeActivity extends AppCompatActivity
         mFooter = findViewById(R.id.footerframe);
         mRideNow = findViewById(R.id.linear_request);
         mBookNow = findViewById(R.id.linear_booking);
+        mDriverLoading_et=(CheckBox)findViewById(R.id.driver_loading);
+        mRadioGroup = (RadioGroup)findViewById(R.id.radiogroup_VType);
+        mCarType1 = (RadioButton)findViewById(R.id.radio_CarType1);
+        mCarType2 = (RadioButton)findViewById(R.id.radio_CarType2);
+
+        SuzukiRate= 200;
+        RikshaRate=90;
+        SuzukiBase=600;
+        RikshaBase=270;
+        DriverLoadingRate=150;
+
+        if (mCarType1.isChecked()) {
+            vt = mCarType1.getText().toString();
+
+        } else if (mCarType2.isChecked()){
+            vt = mCarType2.getText().toString();
+
+        }
+
+        mDriverLoading_et.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!(mDriverLoading_et.isChecked())){
+                    mDriverLoading = "Driver Loading Not Needed";
+                    fareCarCalculator();
+                } else {
+                    mDriverLoading="Driver Loading Needed";
+                    fareCarCalculator();
+                }
+            }
+        });
+
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                View radioButton = mRadioGroup.findViewById(checkedId);
+                int index = mRadioGroup.indexOfChild(radioButton);
+
+                // Add logic here
+
+                switch (index) {
+                    case 0: // first button
+                        vt = mCarType1.getText().toString();
+                        fareCarCalculator();
+                        break;
+                    case 1: // secondbutton
+                        vt = mCarType2.getText().toString();
+                        fareCarCalculator();
+                }
+            }
+        });
+
+
 
 
 
@@ -374,20 +456,59 @@ public class HomeActivity extends AppCompatActivity
         mRideNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((mPickupText.getText()!=null)&&(mDropOffText.getText()!=null)){
-                    Intent intent = new Intent(HomeActivity.this, CurrentRideActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else{
-                    Toast.makeText(HomeActivity.this,"Kindly choose Pickup and Drop Location",Toast.LENGTH_SHORT).show();
+                    if (mPickUpLatLng != null && mDropLatLng != null) {
+                        fareCarCalculator();
+
+
+                            FragmentManager fm = getFragmentManager();
+                            android.support.v4.app.FragmentManager sFm = getSupportFragmentManager();
+                            sFm.beginTransaction().hide(sMapFragment).commit();
+                            mHeader.setVisibility(GONE);
+                            mFooter.setVisibility(GONE);
+                            //setDrawerState(false);
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.replace(R.id.cm, new currentRideFragment());
+                            ft.commit();
+                        /*}else
+                            Toast.makeText(HomeActivity.this, getString(R.string.cargoinfo_error), Toast.LENGTH_LONG).show();
+                        }else
+                            Toast.makeText(HomeActivity.this, getString(R.string.boxes_weight_error), Toast.LENGTH_LONG).show();
+                    }*/}else {
+                        Toast.makeText(HomeActivity.this, getString(R.string.invalid_location), Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+                });
+
+
 
 
     }
 
-    @Override
+
+    public void fareCarCalculator() {
+        Double result = 0.0;
+        Double b;
+
+        Double a = Double.parseDouble(mdistancekm.trim());
+        if (!(mCarType2.isChecked())) {
+            b = (a * SuzukiRate) + SuzukiBase;
+            if ((mDriverLoading_et.isChecked())) {
+                result = b + DriverLoadingRate;
+            } else {
+                result = b;
+            }
+        } else if (!(mCarType1.isChecked())) {
+            b = (a * RikshaRate) + RikshaBase;
+            if ((mDriverLoading_et.isChecked())) {
+                result = b + DriverLoadingRate;
+            } else {
+                result = b;
+            }
+        }
+        FareEstimate = result.toString();
+        }
+
+        @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -665,6 +786,7 @@ public class HomeActivity extends AppCompatActivity
 
                 mPickUpLatLng = place.getLatLng();
                 mPickupAddress= place.getAddress().toString();
+                mPickupString=  mPickupText.getText().toString();
 
                 CameraUpdate mCameraCL = CameraUpdateFactory.newLatLngZoom(mPickUpLatLng, 18);
                 // mMap.moveCamera(mCameraCL);
@@ -720,9 +842,11 @@ public class HomeActivity extends AppCompatActivity
                 }
                 mDropMarker = mMap.addMarker(new MarkerOptions().position(mDropLatLng)
                         .title(drop.getName().toString()).draggable(true));
-                mdistanceinKM=distanceInKM();
+                mdistancekm=distanceInKM();
 
-                Toast.makeText(HomeActivity.this, "Distance in KM " + mdistanceinKM, Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(HomeActivity.this, "Distance in KM " + mdistancekm + mPickupString, Toast.LENGTH_SHORT).show();
+                fareCarCalculator();
                 // Display the third party attributions if set.
                 final CharSequence thirdPartyAttribution = places.getAttributions();
                 if (thirdPartyAttribution == null) {
@@ -1151,6 +1275,7 @@ public class HomeActivity extends AppCompatActivity
             return results[0];*/
         // }
         return String.valueOf(distance);
+
     }
     public void setDrawerState(boolean isEnabled) {
         if ( isEnabled ) {
@@ -1208,6 +1333,8 @@ public class HomeActivity extends AppCompatActivity
                 String address = ((JSONArray)jsonObject.get("results")).getJSONObject(0).get("formatted_address").toString();
                 mPickupText.setText(address);
                 mPickupAddress=address;
+                mPickupString=mPickupText.getText().toString();
+
 
 
             } catch (JSONException e) {

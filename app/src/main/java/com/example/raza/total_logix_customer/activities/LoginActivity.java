@@ -42,7 +42,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadLocale();
+       // loadLocale();
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity {
         AppCompatButton mLogin = findViewById(R.id.login);
         TextView mForgetPassword = findViewById(R.id.txt_forgotpassword);
 
-        RelativeLayout mLanguage = findViewById(R.id.language);
+  //      RelativeLayout mLanguage = findViewById(R.id.language);
 
 
         mLogin.setOnClickListener(new View.OnClickListener() {
@@ -71,13 +71,13 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        mLanguage.setOnClickListener(new View.OnClickListener() {
+    /*    mLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeLanguage(v);
             }
         });
-
+*/
         mForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,6 +156,7 @@ public class LoginActivity extends BaseActivity {
     }
 
 
+/*
     //Language Start
 
     public void changeLanguage(View view) {
@@ -203,6 +204,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     //Language End
+*/
 
 
     public void gotoRegistration(View view) {

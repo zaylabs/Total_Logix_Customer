@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-            <array name="weightinkg">
+    <array name="weightinkg">
             <item>1 KG</item>
             <item>2 KG</item>
             <item>3 KG</item>

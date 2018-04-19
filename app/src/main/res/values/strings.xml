@@ -34,7 +34,7 @@
     <string name="ratekm">RATE/KM</string>
     <string name="request_ride">Logix Now</string>
     <string name="book_rides">Logix Later</string>
-    <string name="pick_up_location">Pick Up Location</string>
+    <string name="pick_up_location">Pickup Location</string>
     <string name="drop_location">Drop Location</string>
     <string name="title_activity_stub__maps">Map</string>
 
@@ -65,17 +65,27 @@
     <string name="option_get_place">Get place</string>
     <string name="pick_place">Choose a place</string>
     <string name="title_activity_fare_estimate">FareEstimate</string>
-    <string name="total_km">Total Distance in KM</string>
-    <string name="number_of_boxes">Number of Boxes</string>
+    <string name="total_km">Distance</string>
+    <string name="number_of_boxes">Boxes</string>
     <string name="weight">Weight</string>
     <string name="vahicle_type">Vahicle Type</string>
     <string name="car_type1">Suzuki</string>
     <string name="car_type2">Riksha</string>
     <string name="fare_estimate">Fare Estimate</string>
+    <string name="cargo_info">Cargo Details</string>
+    <string name="confirm">Confirm</string>
+    <string name="boxes_weight_error">Kinly choose no of Boxes and weight</string>
+    <string name="cargoinfo_error">Kindly select Cargo Type</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_current_ride">CurrentRideActivity</string>
+    <string name="invalid_location">Kindly add pickup and drop location</string>
+    <string name="driver_loading">Driver Loading</string>
+    <string name="cargotype">Cargo Type</string>
+    <string name="KM">KM</string>
+    <string name="INVALID_DISTANCE">INVALID DISTANCE</string>
+    <string name="ok">OK</string>
 
 
 </resources>
