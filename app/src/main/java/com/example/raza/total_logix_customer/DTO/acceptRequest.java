@@ -4,7 +4,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import java.util.Date;
 
-public class customerHistory {
+public class acceptRequest {
 
     private String name;
     private String phone;
@@ -34,16 +34,17 @@ public class customerHistory {
     private String ridefare;
     private String paidvia;
     private String paymentstatus;
+    private Date statusdate;
     private Float waitingtime;
     private String uniqueID;
     private String settlement;
     private float ridestars;
     private float estDistance;
-    customerHistory(){
+    acceptRequest(){
 
     }
 
-    public customerHistory(String name, GeoPoint originalpickup, GeoPoint originaldrop, GeoPoint actualpickup, GeoPoint actualdrop, String phone, Date date, String CID, String VT, String weight, String boxes , String description, String driverloading, Float ridedistance, String pickupaddress, String dropaddress, String estFare, String drivername, String driverdp, String drivernic, String driverphone, GeoPoint driverlocation, String carregno, String driverid, String status, String ridefare, String paidvia, String paymentstatus, Float waitingtime, String uniqueID, String settlement, float ridestars, float estDistance){
+    public acceptRequest(String name, GeoPoint originalpickup, GeoPoint originaldrop, GeoPoint actualpickup, GeoPoint actualdrop, String phone, Date date, String CID, String VT, String weight, String boxes , String description, String driverloading, Float ridedistance, String pickupaddress, String dropaddress, String estFare, String drivername, String driverdp, String drivernic, String driverphone, GeoPoint driverlocation, String carregno, String driverid, String status, String ridefare, String paidvia, String paymentstatus, Date statusdate, Float waitingtime, String uniqueID, String settlement  , float ridestars, float estDistance ){
 
         this.name = name;
         this.originalpickup = originalpickup;
@@ -60,8 +61,8 @@ public class customerHistory {
         this.driverloading=driverloading;
         this.ridedistance=ridedistance;
         this.pickupaddress=pickupaddress;
-        this.dropaddress=dropaddress;
         this.estFare=estFare;
+        this.dropaddress=dropaddress;
         this.drivername=drivername;
         this.driverdp=driverdp;
         this.drivernic=drivernic;
@@ -70,15 +71,15 @@ public class customerHistory {
         this.carregno=carregno;
         this.driverid=driverid;
         this.status=status;
+
         this.ridefare=ridefare;
         this.paidvia=paidvia;
         this.paymentstatus=paymentstatus;
         this.uniqueID=uniqueID;
+        this.statusdate=statusdate;
         this.waitingtime=waitingtime;
         this.settlement=settlement;
-        this.ridestars=ridestars;
         this.estDistance=estDistance;
-
     }
 
     public String getName() {
@@ -162,14 +163,6 @@ public class customerHistory {
         this.ridedistance = ridedistance;
     }
 
-    public Float getWaitingtime() {
-        return waitingtime;
-    }
-
-    public void setWaitingtime(Float waitingtime) {
-        this.waitingtime = waitingtime;
-    }
-
     public String getPickupaddress() {
         return pickupaddress;
     }
@@ -234,20 +227,28 @@ public class customerHistory {
         this.carregno = carregno;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getDriverid() {
         return driverid;
     }
 
     public void setDriverid(String driverid) {
         this.driverid = driverid;
+    }
+
+    public String getUniqueID() {
+        return uniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getRidefare() {
@@ -274,20 +275,20 @@ public class customerHistory {
         this.paymentstatus = paymentstatus;
     }
 
-    public String getUniqueID() {
-        return uniqueID;
+    public Date getStatusdate() {
+        return statusdate;
     }
 
-    public void setUniqueID(String uniqueID) {
-        this.uniqueID = uniqueID;
+    public void setStatusdate(Date statusdate) {
+        this.statusdate = statusdate;
     }
 
-    public String getEstFare() {
-        return estFare;
+    public Float getWaitingtime() {
+        return waitingtime;
     }
 
-    public void setEstFare(String estFare) {
-        this.estFare = estFare;
+    public void setWaitingtime(Float waitingtime) {
+        this.waitingtime = waitingtime;
     }
 
     public GeoPoint getOriginalpickup() {
@@ -322,12 +323,12 @@ public class customerHistory {
         this.actualdrop = actualdrop;
     }
 
-    public String getSettlement() {
-        return settlement;
+    public String getEstFare() {
+        return estFare;
     }
 
-    public void setSettlement(String settlement) {
-        this.settlement = settlement;
+    public void setEstFare(String estFare) {
+        this.estFare = estFare;
     }
 
     public float getRidestars() {
@@ -338,6 +339,10 @@ public class customerHistory {
         this.ridestars = ridestars;
     }
 
+    public String getSettlement() {
+        return settlement;
+    }
+
     public float getEstDistance() {
         return estDistance;
     }
@@ -345,5 +350,11 @@ public class customerHistory {
     public void setEstDistance(float estDistance) {
         this.estDistance = estDistance;
     }
+
+    public void setSettlement(String settlement) {
+        this.settlement = settlement;
+
+    }
 }
+
 

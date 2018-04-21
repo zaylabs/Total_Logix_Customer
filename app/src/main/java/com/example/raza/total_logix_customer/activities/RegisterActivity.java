@@ -178,9 +178,9 @@ public class RegisterActivity extends BaseActivity {
         final String name = mName.getText().toString();
 
         Date currentDate = Calendar.getInstance().getTime();
+        Integer stars= 0;
 
-
-        userProfile profile = new userProfile(name, mEmail.getText().toString(), null, phone, currentDate, null);
+        userProfile profile = new userProfile(name, mEmail.getText().toString(), null, phone, currentDate, null,stars);
 
         db.collection("customers").document(userID).set(profile);
 

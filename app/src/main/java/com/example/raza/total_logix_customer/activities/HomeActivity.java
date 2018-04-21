@@ -51,6 +51,7 @@ import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.adapters.HttpDataHandler;
 import com.example.raza.total_logix_customer.adapters.PlaceAutocompleteAdapter;
 import com.example.raza.total_logix_customer.fragment.currentRideFragment;
+import com.example.raza.total_logix_customer.fragment.profileFragment;
 import com.example.raza.total_logix_customer.support_classes.PermissionUtils;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -270,10 +271,10 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!(mDriverLoading_et.isChecked())){
-                    mDriverLoading = "Driver Loading Not Needed";
+                    mDriverLoading = "Not Needed";
                     fareCarCalculator();
                 } else {
-                    mDriverLoading="Driver Loading Needed";
+                    mDriverLoading="Needed";
                     fareCarCalculator();
                 }
             }
@@ -457,6 +458,13 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                     if (mPickUpLatLng != null && mDropLatLng != null) {
+
+                        if (!(mDriverLoading_et.isChecked())){
+                            mDriverLoading = "Not Needed";
+                           } else {
+                            mDriverLoading="Needed";
+                            }
+
                         fareCarCalculator();
 
 
@@ -572,7 +580,12 @@ public class HomeActivity extends AppCompatActivity
 
                 break;
             case R.id.profile:
+                mHeader.setVisibility(GONE);
+                mFooter.setVisibility(GONE);
 
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.cm, new profileFragment());
+                ft.commit();
                 break;
             case R.id.help:
 

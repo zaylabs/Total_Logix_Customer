@@ -22,11 +22,12 @@ public class customerRequest {
     private String dropaddress;
     private String estFare;
     private String uniqueID;
+    private float stars;
     customerRequest(){
 
     }
 
-    public customerRequest(String name, GeoPoint pickup, GeoPoint drop, String phone, Date date, String CID, String VT, String weight, String boxes , String description, String driverloading, Float ridedistance, String pickupaddress, String dropaddress, String estFare, String uniqueID){
+    public customerRequest(String name, GeoPoint pickup, GeoPoint drop, String phone, Date date, String CID, String VT, String weight, String boxes , String description, String driverloading, Float ridedistance, String pickupaddress, String dropaddress, String estFare, String uniqueID, float stars){
 
         this.name = name;
         this.pickup = pickup;
@@ -44,6 +45,7 @@ public class customerRequest {
         this.dropaddress=dropaddress;
         this.estFare=estFare;
         this.uniqueID = uniqueID;
+        this.stars=stars;
     }
 
     public String getName() {
@@ -172,5 +174,13 @@ public class customerRequest {
 
     public void setUniqueID(String uniqueID) {
         this.uniqueID = uniqueID;
+    }
+
+    public float getStars() {
+        return stars;
+    }
+
+    public void setStars(float stars) {
+        this.stars = stars;
     }
 }

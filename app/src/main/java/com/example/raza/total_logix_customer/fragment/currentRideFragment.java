@@ -2,6 +2,7 @@ package com.example.raza.total_logix_customer.fragment;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.example.raza.total_logix_customer.DTO.customerHistory;
 import com.example.raza.total_logix_customer.DTO.customerRequest;
 import com.example.raza.total_logix_customer.DTO.userProfile;
 import com.example.raza.total_logix_customer.R;
+import com.example.raza.total_logix_customer.activities.CurrentRideActivity;
 import com.example.raza.total_logix_customer.activities.HomeActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -54,12 +56,14 @@ import java.util.Objects;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class currentRideFragment extends android.app.Fragment implements OnMapReadyCallback, DirectionCallback {
+public class currentRideFragment extends android.app.Fragment{
 
 private TextView mPickup, mDrop, mDistance, mVT, mfareestimate, mdriverloading;
 private Spinner mNoOfBoxes_et, mWeight_et, mDescription_et;
+/*
 private MapView mapView;
 private GoogleMap myMap;
+*/
 private LatLng pickupLatLng,dropLatLng;
 private AlertDialog alert;
 private FirebaseFirestore db;
@@ -85,6 +89,7 @@ private String pickupaddress;
 private String uniqueID;
 private String estFare;
 private FirebaseUser user;
+private float stars;
 public currentRideFragment() {
 
         // Required empty public constructor
@@ -115,7 +120,7 @@ public currentRideFragment() {
         mVT=(TextView)view.findViewById(R.id.txt_vt);
         mfareestimate=(TextView)view.findViewById(R.id.txt_fare);
         mdriverloading=(TextView)view.findViewById(R.id.txt_driverloading);
-        mapView = (MapView) view.findViewById(R.id.mapview);
+//        mapView = (MapView) view.findViewById(R.id.mapview);
 
 
         pickupLatLng=((HomeActivity)getActivity()).mPickUpLatLng;
@@ -142,38 +147,17 @@ public currentRideFragment() {
         pickupaddress = mPickup.getText().toString();
         uniqueID= userID+date;
         estFare=mfareestimate.getText().toString();
-            weight="3kg";
+            /*weight="3kg";
             boxes="Less than 5";
             description="Dry Items";
-
+*/
      addItemOnWeight();
      addItemOnBoxes();
      addItemOnCargo();
      getCustomerInfo();
 
-     /*
-     mWeight_et.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-         @Override
-         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-             weight=mWeight_et.getSelectedItem().toString();
-         }
-     });
 
-     mDescription_et.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-         @Override
-         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-             description=mDescription_et.getSelectedItem().toString();
-         }
-     });
-
-     mNoOfBoxes_et.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-         @Override
-         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-             boxes=mNoOfBoxes_et.getSelectedItem().toString();
-         }
-     });
-*/
-        mapView.getMapAsync(this);
+  //      mapView.getMapAsync(this);
 
 
         mCancel.setOnClickListener(new View.OnClickListener() {
@@ -194,7 +178,9 @@ public currentRideFragment() {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+              weight= mWeight_et.getSelectedItem().toString();
+              boxes= mNoOfBoxes_et.getSelectedItem().toString();
+              description= mDescription_et.getSelectedItem().toString();
                 if (weight!=null && boxes != null) {
 
                     if (description!=null) {
@@ -205,11 +191,12 @@ public currentRideFragment() {
                         mCancel.setVisibility(View.INVISIBLE);
 
 
-                        customerRequest customerRequest = new customerRequest(name, pickup, drop, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, uniqueID);
-                        customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", null, null, null, null, uniqueID);
+                        customerRequest customerRequest = new customerRequest(name, pickup, drop, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, uniqueID,stars);
+                        customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", null, null, null, null, uniqueID,null);
 
                         db.collection("customerRequest").document(uniqueID).set(customerRequest);
                         db.collection("CustomerHistory").document(uniqueID).set(customerHistory);
+                        currentRide();
                     }else {
                         Toast.makeText(getContext(), "Kindly Select Cargo Type", Toast.LENGTH_LONG).show();
                     }
@@ -217,7 +204,7 @@ public currentRideFragment() {
                     Toast.makeText(getContext(), "Kindly Select weight & No.of Boxes", Toast.LENGTH_LONG).show();
                 }
 
-                //              currentRide();
+
             }
 
 
@@ -229,7 +216,12 @@ public currentRideFragment() {
         return view;
     }
 
+    private void currentRide() {
 
+        Intent intent = new Intent(getActivity(), CurrentRideActivity.class);
+        startActivity(intent);
+
+    }
 
     private void addItemOnCargo() {
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -268,7 +260,7 @@ public currentRideFragment() {
     }
 
 
-    @Override
+    /*@Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
 
         if (getActivity() != null) {
@@ -285,8 +277,8 @@ public currentRideFragment() {
 
         }
     }
-
-    @Override
+*/
+  /*  @Override
     public void onDirectionFailure(Throwable t) {
             distanceAlert(t.getMessage() + "\n" + t.getLocalizedMessage() + "\n");
         }
@@ -329,7 +321,7 @@ public currentRideFragment() {
         alert = alertDialog.create();
         alert.show();
     }
-
+*/
 private void getCustomerInfo(){
     DocumentReference docRef = db.collection("customers").document(userID);
 
@@ -339,6 +331,7 @@ private void getCustomerInfo(){
             userProfile profile = documentSnapshot.toObject(userProfile.class);
             name =profile.getName();
             phone=profile.getPhone();
+            stars=profile.getStars();
 
 
         }

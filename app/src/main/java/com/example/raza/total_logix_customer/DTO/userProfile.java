@@ -9,20 +9,22 @@ public class userProfile {
     private String dpURL;
     private String phone;
     private Date createDate;
-    private String profileUpdatedatetime;
+    private Date updateDate;
+    private float stars;
 
 
     public userProfile(){
 
     }
-    public userProfile(String name, String email, String dpURL, String phone, Date createDate, String profileUpdatedatetime){
+    public userProfile(String name, String email, String dpURL, String phone, Date createDate, Date updateDate, float stars){
 
         this.name = name;
         this.email = email;
         this.dpURL = dpURL;
         this.phone = phone;
         this.createDate = createDate;
-        this.profileUpdatedatetime = profileUpdatedatetime;
+        this.updateDate = updateDate;
+        this.stars=stars;
     }
 
 
@@ -66,11 +68,19 @@ public class userProfile {
         this.createDate = createDate;
     }
 
-    public String getProfileUpdatedatetime() {
-        return profileUpdatedatetime;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-    public void setProfileUpdatedatetime(String profileUpdatedatetime) {
-        this.profileUpdatedatetime = profileUpdatedatetime;
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public float getStars() {
+        return stars;
+    }
+
+    public void setStars(float stars) {
+        this.stars = stars;
     }
 }

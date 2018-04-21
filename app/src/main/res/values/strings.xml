@@ -86,6 +86,56 @@
     <string name="KM">KM</string>
     <string name="INVALID_DISTANCE">INVALID DISTANCE</string>
     <string name="ok">OK</string>
+    <string name="pickuprequest">Pickup</string>
+    <string name="droprequest">Drop</string>
+    <string name="update_password">Change Password</string>
+    <string name="update">Update</string>
+    <string name="rating">Rating</string>
+    <string name="status">Status</string>
+    <string name="completed">Completed</string>
+    <string name="fare">Fare</string>
+    <string name="sample_fare">Rs.800</string>
+    <string name="paid_via">Paid Via</string>
+    <string name="cash">Cash</string>
+    <string name="settlement">Settlement</string>
+    <string name="settlement_sample">pending</string>
+    <string name="total_distance">Total Distance</string>
+    <string name="sample_total_distance">6.5 KM</string>
+    <string name="Arrived">Arrived</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="take_payment">Take Payment</string>
+    <string name="complete">Complete</string>
+    <string name="waiting_time">Waiting Time</string>
+    <string name="waiting_time_sample">00:10 Minutes</string>
+    <string name="date_time">Date/Time</string>
+    <string name="phone_call_content_description">phone call</string>
+    <string name="customer_rating">Customer Rating</string>
+    <string name="from">FROM</string>
+    <string name="sample_from">Novex Dry Cleaners, Asghar Chambers, Jail Road, Hirabad, Hyderabad, Pakistan</string>
+    <string name="to">TO</string>
+    <string name="arrow">arrow</string>
+    <string name="to_address">Zaylabs, Ashar Chambers,Jail Road, Hirabad, Hyderabad, Pakistan</string>
+    <string name="distance">Pickup Distance</string>
+    <string name="Sample_km_Away">3.67 KM</string>
+    <string name="date">Date</string>
+    <string name="sample_date">March 7th,2017</string>
+    <string name="time">Time</string>
+    <string name="sample_time">10:00 PM</string>
+    <string name="customer_name">CUSTOMER NAME</string>
+    <string name="sample_customer_name">John Doe</string>
+    <string name="est_distance">Est: Ride Distance</string>
+    <string name="sample_distance">6 KM</string>
+    <string name="decline">DECLINE</string>
+    <string name="accept">Accept</string>
+    <string name="sample_phone">00923332626150</string>
+
+    <string name="cargo_type">Cargo Type</string>
+    <string name="cargo_type_sample">Dry Items</string>
+    <string name="boxes">Boxes</string>
+    <string name="sample_boxes">Less than equal 5</string>
+    <string name="_12_kg">12 KG</string>
+    <string name="driver_name">Driver Name</string>
 
 
 </resources>
