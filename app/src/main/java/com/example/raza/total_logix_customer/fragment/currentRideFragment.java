@@ -83,7 +83,7 @@ private String weight;
 private String boxes;
 private String description;
 private String driverloading;
-private Float ridedistance;
+private float ridedistance;
 private String dropaddress;
 private String pickupaddress;
 private String uniqueID;
@@ -178,7 +178,8 @@ public currentRideFragment() {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              weight= mWeight_et.getSelectedItem().toString();
+              float ridestar = 0;
+                weight= mWeight_et.getSelectedItem().toString();
               boxes= mNoOfBoxes_et.getSelectedItem().toString();
               description= mDescription_et.getSelectedItem().toString();
                 if (weight!=null && boxes != null) {
@@ -192,7 +193,7 @@ public currentRideFragment() {
 
 
                         customerRequest customerRequest = new customerRequest(name, pickup, drop, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, uniqueID,stars);
-                        customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", null, null, null, null, uniqueID,null);
+                        customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", null, null, null, null, uniqueID,null,ridestar,ridedistance);
 
                         db.collection("customerRequest").document(uniqueID).set(customerRequest);
                         db.collection("CustomerHistory").document(uniqueID).set(customerHistory);

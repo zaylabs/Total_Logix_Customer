@@ -51,6 +51,7 @@ import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.adapters.HttpDataHandler;
 import com.example.raza.total_logix_customer.adapters.PlaceAutocompleteAdapter;
 import com.example.raza.total_logix_customer.fragment.currentRideFragment;
+import com.example.raza.total_logix_customer.fragment.historyFragment;
 import com.example.raza.total_logix_customer.fragment.profileFragment;
 import com.example.raza.total_logix_customer.support_classes.PermissionUtils;
 import com.google.android.gms.common.api.ApiException;
@@ -557,7 +558,7 @@ public class HomeActivity extends AppCompatActivity
 
         if (sMapFragment.isAdded())
             sFm.beginTransaction().hide(sMapFragment).commit();
-
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
         switch (item.getItemId()) {
             case R.id.home:
                 mHeader.setVisibility(View.VISIBLE);
@@ -571,8 +572,14 @@ public class HomeActivity extends AppCompatActivity
                 break;
 
             case R.id.completed_rides:
+                mHeader.setVisibility(GONE);
+                mFooter.setVisibility(GONE);
 
+
+                ft.replace(R.id.cm, new historyFragment());
+                ft.commit();
                 break;
+
             case R.id.cancelled:
 
                 break;
@@ -583,7 +590,7 @@ public class HomeActivity extends AppCompatActivity
                 mHeader.setVisibility(GONE);
                 mFooter.setVisibility(GONE);
 
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+
                 ft.replace(R.id.cm, new profileFragment());
                 ft.commit();
                 break;

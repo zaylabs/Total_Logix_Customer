@@ -1,5 +1,6 @@
 package com.example.raza.total_logix_customer.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,6 +75,9 @@ public class CurrentRideActivity extends AppCompatActivity {
                         case REMOVED:
                             dHistory.remove(acceptRequest);
                             currentRideAdapter.notifyDataSetChanged();
+                            Intent intent = new Intent(CurrentRideActivity.this, HomeActivity.class);
+                            CurrentRideActivity.this.startActivity(intent);
+
                             break;
                     }
 
