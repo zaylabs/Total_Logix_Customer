@@ -13,6 +13,10 @@ import android.widget.TextView;
 import com.example.raza.total_logix_customer.DTO.acceptRequest;
 import com.example.raza.total_logix_customer.R;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class currentRideAdapter extends RecyclerView.Adapter<currentRideAdapter.ViewHolder> {
@@ -39,20 +43,26 @@ public currentRideAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup paren
 @Override
 public void onBindViewHolder(@NonNull currentRideAdapter.ViewHolder holder, int position) {
 
-        holder.mName.setText(dHistory.get(position).getDrivername());
+        NumberFormat numberFormat = new DecimalFormat("#.##'KM'");
+        DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy h:mm a");
+        NumberFormat watingFormat = new DecimalFormat("#'Mins'");
+        String stringwaiting=watingFormat.format(dHistory.get(position).getWaitingtime());
+
+
+    holder.mName.setText(dHistory.get(position).getDrivername());
         holder.mPickup.setText(dHistory.get(position).getPickupaddress());
         holder.mDrop.setText(dHistory.get(position).getDropaddress());
         holder.mPhone.setText(dHistory.get(position).getDriverphone());
         holder.mstatus.setText(dHistory.get(position).getStatus());
-        holder.mRideDistance.setText(String.valueOf(dHistory.get(position).getRidedistance()));
+        holder.mRideDistance.setText(numberFormat.format(dHistory.get(position).getRidedistance()));
         holder.mDiscription.setText(dHistory.get(position).getDescription());
         holder.mBoxes.setText(dHistory.get(position).getBoxes());
         holder.mWeight.setText(dHistory.get(position).getWeight());
         holder.mPaidVia.setText(dHistory.get(position).getPaidvia());
         holder.mfare.setText(dHistory.get(position).getRidefare());
-        holder.mEstRideDistance.setText(String.valueOf(dHistory.get(position).getEstDistance()));
-        holder.mDatetime.setText(String.valueOf(dHistory.get(position).getDate()));
-
+        holder.mEstRideDistance.setText(numberFormat.format(dHistory.get(position).getEstDistance()));
+        holder.mDatetime.setText(dateFormat.format(dHistory.get(position).getDate()));
+        holder.mWaiting.setText(watingFormat.format(dHistory.get(position).getWaitingtime()));
 
 
 
@@ -67,7 +77,7 @@ public int getItemCount() {
 public class ViewHolder extends RecyclerView.ViewHolder{
 
     View mView;
-    public TextView mName,mPickup,mDrop,mPhone, mstatus, mDiscription, mBoxes, mRideDistance,mWeight, mPaymentStatus,mPaidVia, mfare,mDatetime,mEstRideDistance;
+    public TextView mName,mPickup,mDrop,mPhone, mstatus, mDiscription, mBoxes, mRideDistance,mWeight, mPaymentStatus,mPaidVia, mfare,mDatetime,mEstRideDistance,mWaiting;
     public Button mCancel;
 
     public ViewHolder(View itemView) {
@@ -86,7 +96,7 @@ public class ViewHolder extends RecyclerView.ViewHolder{
         mBoxes= mView.findViewById(R.id.cr_boxes);
         mfare= mView.findViewById(R.id.cr_fare);
         mEstRideDistance=mView.findViewById(R.id.cr_estdistance);
-
+        mWaiting=mView.findViewById(R.id.cr_waiting);
 
     }
 }

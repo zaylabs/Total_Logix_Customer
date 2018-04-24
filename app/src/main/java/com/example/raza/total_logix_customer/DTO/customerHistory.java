@@ -19,7 +19,7 @@ public class customerHistory {
     private String boxes;
     private String description;
     private String driverloading;
-    private Float ridedistance;
+    private float ridedistance;
     private String pickupaddress;
     private String dropaddress;
     private String estFare;
@@ -34,16 +34,17 @@ public class customerHistory {
     private String ridefare;
     private String paidvia;
     private String paymentstatus;
-    private Float waitingtime;
+    private float waitingtime;
     private String uniqueID;
     private String settlement;
     private float ridestars;
     private float estDistance;
+    private String gatepass;
     customerHistory(){
 
     }
 
-    public customerHistory(String name, GeoPoint originalpickup, GeoPoint originaldrop, GeoPoint actualpickup, GeoPoint actualdrop, String phone, Date date, String CID, String VT, String weight, String boxes , String description, String driverloading, Float ridedistance, String pickupaddress, String dropaddress, String estFare, String drivername, String driverdp, String drivernic, String driverphone, GeoPoint driverlocation, String carregno, String driverid, String status, String ridefare, String paidvia, String paymentstatus, Float waitingtime, String uniqueID, String settlement, float ridestars, float estDistance){
+    public customerHistory(String name, GeoPoint originalpickup, GeoPoint originaldrop, GeoPoint actualpickup, GeoPoint actualdrop, String phone, Date date, String CID, String VT, String weight, String boxes , String description, String driverloading, float ridedistance, String pickupaddress, String dropaddress, String estFare, String drivername, String driverdp, String drivernic, String driverphone, GeoPoint driverlocation, String carregno, String driverid, String status, String ridefare, String paidvia, String paymentstatus, float waitingtime, String uniqueID, String settlement, float ridestars, float estDistance, String gatepass){
 
         this.name = name;
         this.originalpickup = originalpickup;
@@ -78,7 +79,7 @@ public class customerHistory {
         this.settlement=settlement;
         this.ridestars=ridestars;
         this.estDistance=estDistance;
-
+        this.gatepass=gatepass;
     }
 
     public String getName() {
@@ -154,19 +155,19 @@ public class customerHistory {
         this.driverloading = driverloading;
     }
 
-    public Float getRidedistance() {
+    public float getRidedistance() {
         return ridedistance;
     }
 
-    public void setRidedistance(Float ridedistance) {
+    public void setRidedistance(float ridedistance) {
         this.ridedistance = ridedistance;
     }
 
-    public Float getWaitingtime() {
+    public float getWaitingtime() {
         return waitingtime;
     }
 
-    public void setWaitingtime(Float waitingtime) {
+    public void setWaitingtime(float waitingtime) {
         this.waitingtime = waitingtime;
     }
 
@@ -344,6 +345,14 @@ public class customerHistory {
 
     public void setEstDistance(float estDistance) {
         this.estDistance = estDistance;
+    }
+
+    public String getGatepass() {
+        return gatepass;
+    }
+
+    public void setGatepass(String gatepass) {
+        this.gatepass = gatepass;
     }
 }
 

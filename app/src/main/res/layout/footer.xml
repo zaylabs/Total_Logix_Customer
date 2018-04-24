@@ -15,7 +15,7 @@
         app:cardUseCompatPadding="true"
         app:contentPadding="0dp">
 
-    <LinearLayout
+    <RelativeLayout
 
         android:layout_width="wrap_content"
         android:layout_height="80dp"
@@ -26,50 +26,95 @@
 
 
 
-        <RadioGroup
+        <co.ceryle.radiorealbutton.RadioRealButtonGroup
             android:id="@+id/radiogroup_VType"
-            android:layout_width="240dp"
-            android:layout_height="25dp"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:rrbg_animateDrawables_enter="overshoot"
+            app:rrbg_animateTexts_enter="overshoot"
+            app:rrbg_dividerColor="@color/black"
+            app:rrbg_dividerSize="1dp"
+            app:rrbg_radius="10dp"
+            app:rrbg_selectorColor="@color/yellow"
+            app:rrbg_selectorSize="6dp"
+            app:rrbg_checkedPosition="0"
 
             >
 
-            <RadioButton
+            <co.ceryle.radiorealbutton.RadioRealButton
                 android:id="@+id/radio_CarType1"
-                android:layout_width="140dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/car_type1" />
+                app:rrb_drawable="@drawable/suzuki"
+                app:rrb_drawableHeight="36dp"
+                app:rrb_drawablePadding="8dp"
+                app:rrb_drawableWidth="36dp"
+                app:rrb_ripple="true"
+                app:rrb_rippleColor="@color/black"
+                app:rrb_text=""
+                app:rrb_textColor="@color/black"
+                />
 
-            <RadioButton
+            <co.ceryle.radiorealbutton.RadioRealButton
                 android:id="@+id/radio_CarType2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/car_type2" />
+                app:rrb_drawable="@drawable/risha"
+                app:rrb_drawableGravity="right"
+                app:rrb_drawableHeight="36dp"
+                app:rrb_drawablePadding="8dp"
+                app:rrb_drawableWidth="36dp"
+                app:rrb_ripple="true"
+                app:rrb_rippleColor="@color/black"
 
-        </RadioGroup>
+                app:rrb_textColor="@color/black"
+                />
+
+        </co.ceryle.radiorealbutton.RadioRealButtonGroup>
 
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@+id/radiogroup_VType"
+    android:gravity="center"
+    >
+    <TextView
+        android:id="@+id/fareest_lble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fare_estimate"
+        android:paddingEnd="@dimen/margin_20"
+        android:paddingStart="@dimen/margin_10"
+        android:visibility="invisible"
+        />
+    <TextView
+        android:id="@+id/fareestimate_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_10"
+        android:paddingEnd="60dp"
+        />
 
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/driver_loading"
-            android:layout_gravity="center"
-            />
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/driver_loading"
 
-        <CheckBox
-            android:id="@+id/driver_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:layout_gravity="center"
+                />
 
-            />
+    <CheckBox
+        android:id="@+id/driver_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
 
-    </LinearLayout>
+        />
+
+</LinearLayout>
+    </RelativeLayout>
 
     </android.support.v7.widget.CardView>
 

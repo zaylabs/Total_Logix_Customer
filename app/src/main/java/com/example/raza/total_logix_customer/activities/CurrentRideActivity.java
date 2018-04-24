@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import com.example.raza.total_logix_customer.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,13 +26,14 @@ import java.util.List;
 public class CurrentRideActivity extends AppCompatActivity {
     private FirebaseFirestore firestoreDB;
     private RecyclerView mDhistory;
-
+    private ProgressBar mProgressbar;
     private List<acceptRequest> dHistory;
     private acceptRequest acceptRequest;
     private currentRideAdapter currentRideAdapter;
     private String driverID;
     private String TAG;
     private FirebaseAuth mAuth;
+    private FrameLayout mProgressLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +44,8 @@ public class CurrentRideActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         driverID = mAuth.getCurrentUser().getUid();
 
-
-
+        mProgressLayout=(FrameLayout)findViewById(R.id.ProgressLayout);
+        mProgressbar=(ProgressBar)findViewById(R.id.progressBar_customer);
         dHistory = new ArrayList<>();
         currentRideAdapter = new currentRideAdapter(this,dHistory);
         mDhistory = (RecyclerView)findViewById(R.id.currentRideRV);
@@ -64,6 +68,7 @@ public class CurrentRideActivity extends AppCompatActivity {
                             acceptRequest = doc.getDocument().toObject(acceptRequest.class);
                             dHistory.add(acceptRequest);
                             currentRideAdapter.notifyDataSetChanged();
+                            mProgressLayout.setVisibility(View.GONE);
                             break;
                         case MODIFIED:
                             dHistory.remove(acceptRequest);

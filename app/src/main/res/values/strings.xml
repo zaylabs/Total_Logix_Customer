@@ -67,7 +67,7 @@
     <string name="title_activity_fare_estimate">FareEstimate</string>
     <string name="total_km">Distance</string>
     <string name="number_of_boxes">Boxes</string>
-    <string name="weight">Weight</string>
+    <string name="weight">Weight in KG</string>
     <string name="vahicle_type">Vahicle Type</string>
     <string name="car_type1">Suzuki</string>
     <string name="car_type2">Riksha</string>
@@ -136,6 +136,9 @@
     <string name="sample_boxes">Less than equal 5</string>
     <string name="_12_kg">12 KG</string>
     <string name="driver_name">Driver Name</string>
+    <string name="gate_pass">Gate Pass</string>
+    <string name="upload_gate_pass">Upload Gate Pass</string>
+    <string name="Vahicle_Type_Error">Kindly Choose Vahicle Type</string>
 
 
 </resources>

@@ -4,8 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CurrentRideActivity">
+    tools:context=".activities.CurrentRideActivity"
 
+    >
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true"
+    android:layout_alignParentStart="true"
+    android:id="@+id/ProgressLayout"
+    >
+
+
+    <ProgressBar
+        android:id="@+id/progressBar_customer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+
+
+   />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Waiting for Driver....."
+        android:textAlignment="center"
+        android:gravity="center_vertical"
+        android:textSize="30dp"
+        android:paddingTop="200dp"
+        />
+</FrameLayout>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

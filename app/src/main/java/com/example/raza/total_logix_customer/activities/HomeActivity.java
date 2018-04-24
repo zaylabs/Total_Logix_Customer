@@ -13,6 +13,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -50,10 +51,11 @@ import com.example.raza.total_logix_customer.DTO.homeinfoPass;
 import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.adapters.HttpDataHandler;
 import com.example.raza.total_logix_customer.adapters.PlaceAutocompleteAdapter;
-import com.example.raza.total_logix_customer.fragment.currentRideFragment;
+
 import com.example.raza.total_logix_customer.fragment.historyFragment;
 import com.example.raza.total_logix_customer.fragment.profileFragment;
 import com.example.raza.total_logix_customer.support_classes.PermissionUtils;
+import com.example.raza.total_logix_customer.support_classes.dialogbox;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
@@ -97,7 +99,12 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Date;
+
+import co.ceryle.radiorealbutton.RadioRealButton;
+import co.ceryle.radiorealbutton.RadioRealButtonGroup;
 
 import static android.view.View.GONE;
 
@@ -207,7 +214,7 @@ public class HomeActivity extends AppCompatActivity
 
     public Float distance;
 
-    private TextView mNameField;
+    private TextView mNameField, mFareEstimate;
     private ImageView  mMyLocation, mClear;
     private de.hdodenhof.circleimageview.CircleImageView mDisplayPic;
 
@@ -216,9 +223,9 @@ public class HomeActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private homeinfoPass pass;
     private Spinner mNoOfBoxes_et, mWeight_et, mDescription_et;
-    private RadioGroup mRadioGroup;
-    private RadioButton mCarType1;
-    private RadioButton mCarType2;
+    private co.ceryle.radiorealbutton.RadioRealButtonGroup mRadioGroup;
+    private co.ceryle.radiorealbutton.RadioRealButton mCarType1;
+    private co.ceryle.radiorealbutton.RadioRealButton mCarType2;
     private CheckBox mDriverLoading_et;
     public String mDriverLoading;
     public String vt;
@@ -230,6 +237,7 @@ public class HomeActivity extends AppCompatActivity
     public String FareEstimate;
     public String mPickupString;
     public String mDropString;
+    private TextView mFareEstimateLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -250,10 +258,11 @@ public class HomeActivity extends AppCompatActivity
         mRideNow = findViewById(R.id.linear_request);
         mBookNow = findViewById(R.id.linear_booking);
         mDriverLoading_et=(CheckBox)findViewById(R.id.driver_loading);
-        mRadioGroup = (RadioGroup)findViewById(R.id.radiogroup_VType);
-        mCarType1 = (RadioButton)findViewById(R.id.radio_CarType1);
-        mCarType2 = (RadioButton)findViewById(R.id.radio_CarType2);
-
+        mRadioGroup = findViewById(R.id.radiogroup_VType);
+        mCarType1 = findViewById(R.id.radio_CarType1);
+        mCarType2 = findViewById(R.id.radio_CarType2);
+        mFareEstimate=findViewById(R.id.fareestimate_tv);
+        mFareEstimateLabel=findViewById(R.id.fareest_lble);
         SuzukiRate= 200;
         RikshaRate=90;
         SuzukiBase=600;
@@ -261,11 +270,16 @@ public class HomeActivity extends AppCompatActivity
         DriverLoadingRate=150;
 
         if (mCarType1.isChecked()) {
-            vt = mCarType1.getText().toString();
-
+            vt="Suzuki";
+            if (distance!=null) {
+                fareCarCalculator();
+            }
         } else if (mCarType2.isChecked()){
-            vt = mCarType2.getText().toString();
+            vt = "Riksha";
 
+            if (distance!=null) {
+                fareCarCalculator();
+            }
         }
 
         mDriverLoading_et.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -273,33 +287,38 @@ public class HomeActivity extends AppCompatActivity
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (!(mDriverLoading_et.isChecked())){
                     mDriverLoading = "Not Needed";
-                    fareCarCalculator();
+                    if (mDropOffText!=null) {
+                        if (distance!=null) {
+                            fareCarCalculator();
+                        }
+                    }
                 } else {
                     mDriverLoading="Needed";
-                    fareCarCalculator();
+                    if (mDropOffText!=null) {
+                        if (distance!=null) {
+                            fareCarCalculator();
+                        }
+                    }
                 }
             }
         });
 
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
+        mRadioGroup.setOnClickedButtonListener(new RadioRealButtonGroup.OnClickedButtonListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                View radioButton = mRadioGroup.findViewById(checkedId);
-                int index = mRadioGroup.indexOfChild(radioButton);
-
-                // Add logic here
-
-                switch (index) {
-                    case 0: // first button
-                        vt = mCarType1.getText().toString();
+            public void onClickedButton(RadioRealButton button, int position) {
+                Toast.makeText(HomeActivity.this, "Clicked! Position: " + position, Toast.LENGTH_SHORT).show();
+                if (position!=1){
+                    vt=("Suzuki");
+                    if (distance!=null) {
                         fareCarCalculator();
-                        break;
-                    case 1: // secondbutton
-                        vt = mCarType2.getText().toString();
+                    }
+                }else {
+                    vt=("Riksha");
+                    if (distance!=null) {
                         fareCarCalculator();
+                    }
                 }
+
             }
         });
 
@@ -392,6 +411,7 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 mDropOffText.setText("");
+                mFareEstimate.setText("");
 
 
             }
@@ -459,30 +479,21 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                     if (mPickUpLatLng != null && mDropLatLng != null) {
-
-                        if (!(mDriverLoading_et.isChecked())){
-                            mDriverLoading = "Not Needed";
-                           } else {
-                            mDriverLoading="Needed";
+                        if (vt != null) {
+                            if (!(mDriverLoading_et.isChecked())) {
+                                mDriverLoading = "Not Needed";
+                            } else {
+                                mDriverLoading = "Needed";
                             }
-
-                        fareCarCalculator();
-
-
-                            FragmentManager fm = getFragmentManager();
-                            android.support.v4.app.FragmentManager sFm = getSupportFragmentManager();
-                            sFm.beginTransaction().hide(sMapFragment).commit();
                             mHeader.setVisibility(GONE);
                             mFooter.setVisibility(GONE);
-                            //setDrawerState(false);
-                            FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            ft.replace(R.id.cm, new currentRideFragment());
-                            ft.commit();
-                        /*}else
-                            Toast.makeText(HomeActivity.this, getString(R.string.cargoinfo_error), Toast.LENGTH_LONG).show();
-                        }else
-                            Toast.makeText(HomeActivity.this, getString(R.string.boxes_weight_error), Toast.LENGTH_LONG).show();
-                    }*/}else {
+
+                            openDialog();
+                            ;
+                        } else
+                            Toast.makeText(HomeActivity.this, R.string.Vahicle_Type_Error, Toast.LENGTH_LONG).show();
+                        }
+                        else {
                         Toast.makeText(HomeActivity.this, getString(R.string.invalid_location), Toast.LENGTH_LONG).show();
                     }
                 }
@@ -493,12 +504,19 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+    private void openDialog() {
+            dialogbox dialogbox = new dialogbox();
+            dialogbox.show(getSupportFragmentManager(), "Additional Details");
+
+        }
+
+
 
     public void fareCarCalculator() {
         Double result = 0.0;
         Double b;
 
-        Double a = Double.parseDouble(mdistancekm.trim());
+        Double a = Double.parseDouble(distance.toString());
         if (!(mCarType2.isChecked())) {
             b = (a * SuzukiRate) + SuzukiBase;
             if ((mDriverLoading_et.isChecked())) {
@@ -514,8 +532,11 @@ public class HomeActivity extends AppCompatActivity
                 result = b;
             }
         }
-        FareEstimate = result.toString();
-        }
+        NumberFormat numberFormat = new DecimalFormat("'Rs.'#");
+        mFareEstimateLabel.setVisibility(View.VISIBLE);
+        FareEstimate = numberFormat.format(result);
+        mFareEstimate.setText(FareEstimate);
+    }
 
         @Override
     public void onBackPressed() {
@@ -620,6 +641,7 @@ public class HomeActivity extends AppCompatActivity
         startLocationUpdates();
 
 
+
     }
 
     @Override
@@ -668,9 +690,30 @@ public class HomeActivity extends AppCompatActivity
         setOnMyLocationClick();
         mHeader.setVisibility(View.VISIBLE);
         mFooter.setVisibility(View.VISIBLE);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                if (mCurrentLocation!=null){
+                mPickUpLatLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+                lat = mPickUpLatLng.latitude;
+                lng = mPickUpLatLng.longitude;
+                /*    new GetAddress().execute(String.format("%.4f,%.4f", lat, lng));*/
+                CameraUpdate mCameraCL = CameraUpdateFactory.newLatLngZoom(mPickUpLatLng, 18);
+                mMap.animateCamera(mCameraCL);
+                if (mPickupMarker != null) {
+                    mPickupMarker.remove();
+                }
+
+                mPickupMarker = mMap.addMarker(new MarkerOptions().position(mPickUpLatLng)
+                        .title(mPickUpLatLng.toString()).draggable(true));
+            }}
+        }, 8000);
+
+
 
     }
-
     private void setOnMyLocationButtonClick() {
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
@@ -1284,17 +1327,11 @@ public class HomeActivity extends AppCompatActivity
         loc2.setLongitude(mDropLatLng.longitude);
 
         distance = loc1.distanceTo(loc2)/1000;
-            /*Double mpickuplongitude = mPickUpLatLng.longitude;
-            Double mpickuplatitude= mPickUpLatLng.latitude;
-            Double mdroplongitude= mDropLatLng.longitude;
-            Double mdroplatitude=mDropLatLng.latitude;
-            Location mDistance = new Location("ServiceProvider");
-            float[] results =  new float[1];
-            mDistance.distanceBetween(mpickuplatitude,mdroplatitude,mpickuplongitude,mdroplongitude,results);
 
-            return results[0];*/
-        // }
-        return String.valueOf(distance);
+        NumberFormat numberFormat = new DecimalFormat("#.##'KM'");
+
+
+        return numberFormat.format(distance);
 
     }
     public void setDrawerState(boolean isEnabled) {
