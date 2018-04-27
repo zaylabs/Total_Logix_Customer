@@ -37,6 +37,7 @@ public class historyFragment extends android.app.Fragment {
     private String TAG;
     private FirebaseAuth mAuth;
 
+
     public historyFragment() {
         // Required empty public constructor
     }

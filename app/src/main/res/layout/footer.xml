@@ -70,6 +70,7 @@
                 app:rrb_textColor="@color/black"
                 />
 
+
         </co.ceryle.radiorealbutton.RadioRealButtonGroup>
 
 
@@ -85,23 +86,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/fare_estimate"
-        android:paddingEnd="@dimen/margin_20"
-        android:paddingStart="@dimen/margin_10"
+        android:paddingStart="0dp"
+        android:paddingEnd="@dimen/margin_10"
+
         android:visibility="invisible"
         />
+
     <TextView
         android:id="@+id/fareestimate_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/margin_10"
-        android:paddingEnd="60dp"
-        />
+        android:paddingEnd="50dp"
+        android:paddingStart="10dp"
+         />
 
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/driver_loading"
+
 
                 />
 

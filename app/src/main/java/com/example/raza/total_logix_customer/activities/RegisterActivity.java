@@ -14,14 +14,19 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.raza.total_logix_customer.DTO.transactionhistory;
 import com.example.raza.total_logix_customer.DTO.userProfile;
+import com.example.raza.total_logix_customer.DTO.wallet;
 import com.example.raza.total_logix_customer.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
@@ -173,16 +178,22 @@ public class RegisterActivity extends BaseActivity {
 
     public void saveMap() {
 
+        Date currentDate = Calendar.getInstance().getTime();
+        String source= "New Account";
+
         userID = mAuth.getCurrentUser().getUid();
         final String phone = mPhone.getText().toString();
         final String name = mName.getText().toString();
 
-        Date currentDate = Calendar.getInstance().getTime();
+
         Integer stars= 0;
-
         userProfile profile = new userProfile(name, mEmail.getText().toString(), null, phone, currentDate, null,stars);
-
         db.collection("customers").document(userID).set(profile);
+        wallet wallet = new wallet(0,currentDate);
+        db.collection("wallet").document(userID).set(wallet);
+        String uniqueTransactionID=userID+(currentDate.toString());
+        transactionhistory transactionhistory=new transactionhistory(0,currentDate,userID,source,0,0);
+        db.collection("transactionhistory").document(uniqueTransactionID).set(transactionhistory);
 
 
     }

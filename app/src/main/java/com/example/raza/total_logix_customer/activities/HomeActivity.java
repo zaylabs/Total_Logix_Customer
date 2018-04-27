@@ -54,6 +54,7 @@ import com.example.raza.total_logix_customer.adapters.PlaceAutocompleteAdapter;
 
 import com.example.raza.total_logix_customer.fragment.historyFragment;
 import com.example.raza.total_logix_customer.fragment.profileFragment;
+import com.example.raza.total_logix_customer.fragment.walletFragment;
 import com.example.raza.total_logix_customer.support_classes.PermissionUtils;
 import com.example.raza.total_logix_customer.support_classes.dialogbox;
 import com.google.android.gms.common.api.ApiException;
@@ -605,7 +606,12 @@ public class HomeActivity extends AppCompatActivity
 
                 break;
             case R.id.wallet:
+                mHeader.setVisibility(GONE);
+                mFooter.setVisibility(GONE);
 
+
+                ft.replace(R.id.cm, new walletFragment());
+                ft.commit();
                 break;
             case R.id.profile:
                 mHeader.setVisibility(GONE);

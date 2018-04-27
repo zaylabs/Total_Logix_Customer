@@ -65,5 +65,10 @@ dependencies {
     //Number Increment
     implementation 'com.github.travijuu:numberpicker:1.0.7'
 
+    //CC
+    implementation 'com.braintreepayments:card-form:3.3.0'
+
+    implementation 'io.card:android-sdk:5.5.1'
+
 }
 apply plugin: 'com.google.gms.google-services'

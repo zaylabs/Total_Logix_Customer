@@ -139,6 +139,24 @@
     <string name="gate_pass">Gate Pass</string>
     <string name="upload_gate_pass">Upload Gate Pass</string>
     <string name="Vahicle_Type_Error">Kindly Choose Vahicle Type</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="voucher">Voucher</string>
+    <string name="active_voucher">Active Voucher</string>
+    <string name="apply_voucher">Apply Voucher</string>
+    <string name="add_balance">Add Balance</string>
+    <string name="enter_voucher_code">Enter Voucher Code</string>
+    <string name="Voucher_Eg">eg: TL-20%-Today</string>
+    <string name="purchase">Purchase</string>
+    <string name="valid">Form is Valid</string>
+    <string name="invalid">Form is Invalid</string>
+    <string name="scan_card">Scan Card</string>
+    <string name="verify">Verify</string>
+    <string name="pay_via_credit_card">Pay via Credit Card</string>
+    <string name="enter_amount">Enter Amount</string>
+    <string name="hint_amount">Rs.0</string>
+    <string name="cashVoucher">Pay Via Cash Voucher</string>
+    <string name="apply_cash_voucher">Apply Cash Voucher</string>
+    <string name="enter_cash_voucher">Enter Cash Voucher</string>
 
 
 </resources>

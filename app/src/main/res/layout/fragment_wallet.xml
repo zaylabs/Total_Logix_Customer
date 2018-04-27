@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.raza.total_logix_customer.fragment.walletFragment"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingTop="5dp"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/mapview"
+            android:src="@mipmap/splash"
+            />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollviewrequest"
+            android:layout_below="@id/mapview"
+            >
+
+            <LinearLayout
+                android:background="@color/white"
+                android:id="@+id/linear_child1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/scrollviewrequest"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_20"
+                    >
+
+
+                    <TableRow
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:padding="10dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/current_balance"
+                            android:padding="@dimen/margin_20"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <TextView
+                            android:id="@+id/currentBalaceTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hint_amount"
+                            android:padding="@dimen/margin_20"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/amountrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:padding="10dp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        >
+
+                        <TextView
+                            android:id="@+id/textView9"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/enter_amount"
+                            android:padding="@dimen/margin_20"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <EditText
+                            android:id="@+id/AmountET"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_amount"
+                            android:padding="@dimen/margin_20"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    </TableRow>
+                    <TableRow
+                        android:id="@+id/cashvrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
+                        android:padding="10dp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        >
+
+                        <TextView
+                            android:id="@+id/textView10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/enter_cash_voucher"
+                            android:padding="@dimen/margin_20"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <EditText
+                            android:id="@+id/cashvoucherET"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_amount"
+                            android:padding="@dimen/margin_20"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    </TableRow>
+
+
+                </TableLayout>
+
+
+
+
+
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/addBalaceCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_5"
+                    app:cardBackgroundColor="@color/text_color"
+                    app:cardCornerRadius="5dp"
+                    app:cardUseCompatPadding="true"
+                    android:visibility="visible"
+                    >
+
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/addBalace"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/text_color"
+                        android:padding="@dimen/margin_15"
+                        android:text="@string/add_balance"
+
+                        android:textStyle="normal" />
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/addviaccCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_5"
+                    app:cardBackgroundColor="@color/text_color"
+                    app:cardCornerRadius="5dp"
+                    app:cardUseCompatPadding="true"
+                    android:visibility="gone"
+                    >
+
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/addviacc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/text_color"
+                        android:padding="@dimen/margin_15"
+                        android:text="@string/pay_via_credit_card"
+
+                        android:textStyle="normal" />
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/addviacashvoucherCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_5"
+                    app:cardBackgroundColor="@color/text_color"
+                    app:cardCornerRadius="5dp"
+                    app:cardUseCompatPadding="true"
+                    android:visibility="gone"
+                    >
+
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/addviacashvoucher"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/text_color"
+                        android:padding="@dimen/margin_15"
+                        android:text="@string/cashVoucher"
+
+                        android:textStyle="normal" />
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/applyCashVoucherCV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_5"
+                    app:cardBackgroundColor="@color/text_color"
+                    app:cardCornerRadius="5dp"
+                    app:cardUseCompatPadding="true"
+                    android:visibility="gone"
+                    >
+
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/applyCashVoucher"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/text_color"
+                        android:padding="@dimen/margin_15"
+                        android:text="@string/apply_cash_voucher"
+
+                        android:textStyle="normal" />
+                </android.support.v7.widget.CardView>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>
