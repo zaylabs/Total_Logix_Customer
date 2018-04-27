@@ -80,6 +80,8 @@ public class walletFragment extends android.app.Fragment {
     private float currentBalance;
     private float cash;
     private ArrayList<cashVoucherApplied> cashVoucherApplieds;
+    private Boolean codeApplied=false;
+    private Boolean codeExist=false;
 
     public walletFragment() {
         // Required empty public constructor
@@ -203,8 +205,8 @@ public class walletFragment extends android.app.Fragment {
             public void onClick(View v) {
 
                 final String vcode = CashVoucher.getText().toString();
-                final int[] CodeApplied = {0};
-                final int[] DoesNotExist = {0};
+
+
                 Query mQuery = db.collection("cashVoucherApplied")
                         .whereEqualTo("userid", userID);
                 Query mcodeQuery = mQuery.whereEqualTo("cashvouchercode", vcode);
@@ -217,7 +219,7 @@ public class walletFragment extends android.app.Fragment {
                         for (DocumentSnapshot ds : documentSnapshots) {
                             if (ds != null) {
                                 Log.d(TAG, "checkingIfCashVoucher: FOUND A MATCH: " + vcode);
-                                CodeApplied[0] = 1;
+                                  codeApplied = true;
                             }
                         }
                     }
@@ -230,19 +232,18 @@ public class walletFragment extends android.app.Fragment {
 
                                 for (DocumentSnapshot ds : documentSnapshots) {
                                     if (ds != null) {
-
                                         cashVoucher cashVoucher = ds.toObject(com.example.raza.total_logix_customer.DTO.cashVoucher.class);
                                         ExpireDate = cashVoucher.getExpire();
                                         cash = cashVoucher.getCash();
-                                        DoesNotExist[0] = 1;
+                                        codeExist=true;
                                     }
                                 }
                             }
                         });
 
-                if (DoesNotExist[0] == 1) {
+                if (!codeExist) {
 
-                    if (!(CodeApplied[0] == 1)) {
+                    if (codeApplied) {
 
                         if (ExpireDate.after(currentdate)) {
                             float newbalance = cash + currentBalance;
