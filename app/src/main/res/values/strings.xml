@@ -157,6 +157,13 @@
     <string name="cashVoucher">Pay Via Cash Voucher</string>
     <string name="apply_cash_voucher">Apply Cash Voucher</string>
     <string name="enter_cash_voucher">Enter Cash Voucher</string>
+    <string name="cashvoucherexample">eg.TL-0094</string>
+    <string name="transaction_history">Transaction History</string>
+    <string name="old_balance">Old Balance</string>
+    <string name="added_amount">Added Amount</string>
+    <string name="updated_balance">Updated Balance</string>
+    <string name="source">Source</string>
+    <string name="Sample_source">Credit Card</string>
 
 
 </resources>

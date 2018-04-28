@@ -14,9 +14,9 @@
             android:icon="@mipmap/ic_thumb_up_black_24dp"
             android:title="@string/menu_completed" />
         <item
-            android:id="@+id/cancelled"
-            android:icon="@mipmap/ic_cancel_black_24dp"
-            android:title="@string/menu_cancelled" />
+            android:id="@+id/transactionhistory"
+            android:icon="@drawable/ic_account_balance_wallet_black_24dp"
+            android:title="@string/transaction_history" />
         <item
             android:id="@+id/profile"
             android:icon="@mipmap/ic_account_circle_black_24dp"

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="10dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="0dp">
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="6dp"
+            android:background="@color/white">
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/relative_parent"
+                android:background="@android:color/darker_gray" />
+
+
+            <RelativeLayout
+                android:id="@+id/R_cnp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view"
+                android:layout_marginTop="@dimen/five"
+                android:orientation="horizontal"
+                android:weightSum="0">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/img_detail"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="5dp"
+                            android:gravity="start"
+                            android:padding="1dp"
+                            android:text="@string/date" />
+
+                        <TextView android:textStyle="bold"
+                            android:id="@+id/th_dateupdated"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="5dp"
+                            android:gravity="start"
+                            android:padding="1dp"
+                            android:text="@string/sample_date" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <TextView
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="5dp"
+                            android:gravity="start"
+                            android:padding="1dp"
+                            android:text="@string/old_balance" />
+
+                        <TextView android:textStyle="bold"
+                            android:id="@+id/th_oldbalance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="5dp"
+                            android:gravity="start"
+                            android:padding="1dp"
+                            android:text="@string/sample_fare" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="5dp"
+                            android:gravity="start"
+                            android:padding="1dp"
+                            android:text="@string/updated_balance" />
+
+                        <TextView android:textStyle="bold"
+                            android:id="@+id/th_updatedbalance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="5dp"
+                            android:gravity="start"
+                            android:padding="1dp"
+                            android:text="@string/sample_fare" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <ImageView
+                    android:layout_marginBottom="@dimen/margin_5"
+                    android:id="@+id/img_detail"
+                    android:layout_width="@dimen/arrow"
+                    android:layout_height="@dimen/arrow"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:src="@drawable/arrow"
+                    android:contentDescription="@string/arrow"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/lcname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toEndOf="@+id/img_detail"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="end"
+                        android:padding="1dp"
+                        android:text="@string/source"
+                        tools:gravity="end" />
+
+
+                    <TextView
+                        android:id="@+id/th_source"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="end"
+                        android:padding="1dp"
+                        android:text="@string/Sample_source"
+                        android:textStyle="bold"
+                        tools:gravity="end" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lphone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/lcname"
+                    android:orientation="vertical">
+
+                    <TextView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="end"
+                        android:padding="1dp"
+                        android:text="@string/added_amount"
+                        tools:gravity="end" />
+
+
+                    <TextView
+                        android:id="@+id/th_addedbalance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="end"
+                        android:padding="1dp"
+                        android:text="@string/sample_fare"
+                        android:textStyle="bold"
+                        tools:gravity="end" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/lride"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/lphone"
+                    android:orientation="vertical">
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativecargo"
+                android:paddingTop="0dp"
+                android:paddingBottom="5dp"
+                android:gravity="center"
+
+                >
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

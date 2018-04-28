@@ -48,12 +48,14 @@ import android.widget.Toast;
 
 import com.example.raza.total_logix_customer.BuildConfig;
 import com.example.raza.total_logix_customer.DTO.homeinfoPass;
+import com.example.raza.total_logix_customer.DTO.transactionhistory;
 import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.adapters.HttpDataHandler;
 import com.example.raza.total_logix_customer.adapters.PlaceAutocompleteAdapter;
 
 import com.example.raza.total_logix_customer.fragment.historyFragment;
 import com.example.raza.total_logix_customer.fragment.profileFragment;
+import com.example.raza.total_logix_customer.fragment.transactionhistoryFragment;
 import com.example.raza.total_logix_customer.fragment.walletFragment;
 import com.example.raza.total_logix_customer.support_classes.PermissionUtils;
 import com.example.raza.total_logix_customer.support_classes.dialogbox;
@@ -602,8 +604,13 @@ public class HomeActivity extends AppCompatActivity
                 ft.commit();
                 break;
 
-            case R.id.cancelled:
+            case R.id.transactionhistory:
+                mHeader.setVisibility(GONE);
+                mFooter.setVisibility(GONE);
 
+
+                ft.replace(R.id.cm, new transactionhistoryFragment());
+                ft.commit();
                 break;
             case R.id.wallet:
                 mHeader.setVisibility(GONE);

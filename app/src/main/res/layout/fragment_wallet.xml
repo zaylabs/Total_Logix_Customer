@@ -118,7 +118,7 @@
                             android:id="@+id/cashvoucherET"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="@string/hint_amount"
+                            android:hint="@string/cashvoucherexample"
                             android:padding="@dimen/margin_20"
                             android:textAppearance="?android:attr/textAppearanceMedium" />
 
