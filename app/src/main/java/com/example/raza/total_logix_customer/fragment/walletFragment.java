@@ -1,7 +1,6 @@
 package com.example.raza.total_logix_customer.fragment;
 
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,28 +17,23 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.raza.total_logix_customer.DTO.acceptRequest;
 import com.example.raza.total_logix_customer.DTO.cashVoucher;
 import com.example.raza.total_logix_customer.DTO.cashVoucherApplied;
 import com.example.raza.total_logix_customer.DTO.transactionhistory;
-import com.example.raza.total_logix_customer.DTO.voucherapplied;
 import com.example.raza.total_logix_customer.DTO.wallet;
 import com.example.raza.total_logix_customer.activities.CreditCardActivity;
 import com.example.raza.total_logix_customer.R;
-import com.example.raza.total_logix_customer.activities.CurrentRideActivity;
-import com.example.raza.total_logix_customer.activities.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DecimalFormat;
@@ -80,8 +74,10 @@ public class walletFragment extends android.app.Fragment {
     private float currentBalance;
     private float cash;
     private ArrayList<cashVoucherApplied> cashVoucherApplieds;
-    private Boolean codeApplied=false;
-    private Boolean codeExist=false;
+    private String vcode;
+    private String codealreadyapplied;
+    private String UniqueCashCodeID;
+    private String Codeisthere;
 
     public walletFragment() {
         // Required empty public constructor
@@ -121,40 +117,9 @@ public class walletFragment extends android.app.Fragment {
         currentdate = Calendar.getInstance().getTime();
         numberFormat = new DecimalFormat("'Rs.'#.##");
 
-
-        db.collection("wallet")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot snapshots,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "listen:error", e);
-                            return;
-                        }
-
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            if (dc.getType() == DocumentChange.Type.ADDED) {
+        getBalance();
 
 
-                                wallet wallet = dc.getDocument().toObject(com.example.raza.total_logix_customer.DTO.wallet.class);
-                                currentBalance = wallet.getAmount();
-                                String balance = numberFormat.format(currentBalance);
-                                Balance.setText(balance);
-                            }
-                            if (dc.getType() == DocumentChange.Type.MODIFIED) {
-                                wallet wallet = dc.getDocument().toObject(com.example.raza.total_logix_customer.DTO.wallet.class);
-                                currentBalance = wallet.getAmount();
-                                String balance = numberFormat.format(currentBalance);
-                                Balance.setText(balance);
-                            }
-                            if (dc.getType() == DocumentChange.Type.REMOVED) {
-                                String balance = numberFormat.format(0.0);
-                                Balance.setText(balance);
-                            }
-                        }
-
-                    }
-                });
 
 
         addCredit.setOnClickListener(new View.OnClickListener() {
@@ -171,18 +136,6 @@ public class walletFragment extends android.app.Fragment {
             @Override
             public void onClick(View v) {
 
-                /*db.collection("cashVoucherApplied").whereEqualTo("userid", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                cashVoucherApplied cashVoucherApplied = document.toObject(cashVoucherApplied.class);
-                                cashVoucherApplieds.add(cashVoucherApplied);
-                            }
-                        }
-                    }
-                });*/
                 RowAmount.setVisibility(View.GONE);
                 payviacccv.setVisibility(View.GONE);
                 applyvouchercv.setVisibility(View.VISIBLE);
@@ -204,99 +157,199 @@ public class walletFragment extends android.app.Fragment {
             @Override
             public void onClick(View v) {
 
-                final String vcode = CashVoucher.getText().toString();
+                vcode = CashVoucher.getText().toString().trim();
+                UniqueCashCodeID = userID + vcode;
+
+                if (vcode == null) {
+                    Toast.makeText(getContext(), "Kindly Add Voucher Code", Toast.LENGTH_LONG).show();
+                } else {
+                    db.collection("cashVoucherApplied").document(UniqueCashCodeID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                    Toast.makeText(getContext(), "Voucher Already Used", Toast.LENGTH_LONG).show();
+
+                                    applyvouchercv.setVisibility(View.GONE);
+                                    RowVoucher.setVisibility(View.GONE);
+                                    addcreditcv.setVisibility(View.VISIBLE);
 
 
-                Query mQuery = db.collection("cashVoucherApplied")
-                        .whereEqualTo("userid", userID);
-                Query mcodeQuery = mQuery.whereEqualTo("cashvouchercode", vcode);
+                                } else {
+                                    Log.d(TAG, "No such document");
+
+                                    db.collection("cashVoucher").document(vcode).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentSnapshot document = task.getResult();
+                                                if (document.exists()) {
+                                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                                    Codeisthere = "yes";
+                                                    db.collection("cashVoucher").document(vcode).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                                                            cashVoucher cashVoucher = documentSnapshot.toObject(cashVoucher.class);
+                                                            ExpireDate = cashVoucher.getExpiredate();
+                                                            cash = cashVoucher.getCash();
+                                                            if (ExpireDate.after(currentdate)) {
+
+                                                                float newbalance = cash + currentBalance;
+
+                                                                wallet wallet = new wallet(newbalance, currentdate);
+                                                                db.collection("wallet").document(userID).set(wallet);
+                                                                transactionhistory transactionhistory = new transactionhistory(cash, currentdate, userID, vcode, currentBalance, newbalance);
+                                                                db.collection("transactionhistory").add(transactionhistory);
+                                                                cashVoucherApplied cashVoucherApplied = new cashVoucherApplied(currentdate);
+                                                                db.collection("cashVoucherApplied").document(UniqueCashCodeID).set(cashVoucherApplied);
+                                                                Toast.makeText(getContext(), "Anount Added", Toast.LENGTH_LONG).show();
+                                                                getBalance();
+                                                                applyvouchercv.setVisibility(View.GONE);
+                                                                RowVoucher.setVisibility(View.GONE);
+                                                                addcreditcv.setVisibility(View.VISIBLE);
+                                                            } else {
+                                                                Toast.makeText(getContext(), "Voucher Expired", Toast.LENGTH_LONG).show();
+                                                                applyvouchercv.setVisibility(View.GONE);
+                                                                RowVoucher.setVisibility(View.GONE);
+                                                                addcreditcv.setVisibility(View.VISIBLE);
+                                                            }
+
+                                                        }
+
+                                                    });
+
+                                                } else {
+                                                    Log.d(TAG, "No such document");
+                                                    Toast.makeText(getContext(), "Voucher Does Not Exist" + ExpireDate + vcode, Toast.LENGTH_LONG).show();
+                                                    applyvouchercv.setVisibility(View.GONE);
+                                                    RowVoucher.setVisibility(View.GONE);
+                                                    addcreditcv.setVisibility(View.VISIBLE);
+
+                                                }
+                                            } else {
+                                                Log.d(TAG, "get failed with ", task.getException());
+                                            }
+                                        }
+                                    });
 
 
-                mcodeQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-
-                        for (DocumentSnapshot ds : documentSnapshots) {
-                            if (ds != null) {
-                                Log.d(TAG, "checkingIfCashVoucher: FOUND A MATCH: " + vcode);
-                                  codeApplied = true;
-                            }
-                        }
-                    }
-                });
-
-                db.collection("cashVoucher").whereEqualTo("cashvouchercode", vcode).
-                        addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-
-                                for (DocumentSnapshot ds : documentSnapshots) {
-                                    if (ds != null) {
-                                        cashVoucher cashVoucher = ds.toObject(com.example.raza.total_logix_customer.DTO.cashVoucher.class);
-                                        ExpireDate = cashVoucher.getExpire();
-                                        cash = cashVoucher.getCash();
-                                        codeExist=true;
-                                    }
                                 }
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+
+
                             }
-                        });
-
-                if (!codeExist) {
-
-                    if (codeApplied) {
-
-                        if (ExpireDate.after(currentdate)) {
-                            float newbalance = cash + currentBalance;
-                            wallet wallet = new wallet(newbalance, currentdate);
-                            db.collection("wallet").document(userID).set(wallet);
-
-                            transactionhistory transactionhistory = new transactionhistory(cash, currentdate, userID, vcode, currentBalance, newbalance);
-                            db.collection("transactionhistory").add(transactionhistory);
-                            cashVoucherApplied cashVoucherApplied = new cashVoucherApplied(vcode, userID);
-                            db.collection("cashVoucherApplied").add(cashVoucherApplied);
-                            Toast.makeText(getContext(), "Anount Added", Toast.LENGTH_LONG).show();
-                            applyvouchercv.setVisibility(View.GONE);
-                            RowVoucher.setVisibility(View.GONE);
-                            addcreditcv.setVisibility(View.VISIBLE);
-
-                        } else {
-                            Toast.makeText(getContext(), "Voucher Expired", Toast.LENGTH_LONG).show();
                         }
-                    } else {
 
-                        Toast.makeText(getContext(), "Voucher Already Used", Toast.LENGTH_LONG).show();
+                    });
+                }}
+            });
 
-                        applyvouchercv.setVisibility(View.GONE);
-                        RowVoucher.setVisibility(View.GONE);
-                        addcreditcv.setVisibility(View.VISIBLE);
-                    }
-                }else {
-
-                    Toast.makeText(getContext(), "Voucher Does Not Exist", Toast.LENGTH_LONG).show();
-                }
-
-
-            }
-
-});
-
-       /* }
-                })
-
-
-                mcodeQuery.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-
-                        for (DocumentSnapshot ds : documentSnapshots) {
-                            if (ds != null) {
-
-
-*/
         return view;
     }
 
+    private void getBalance() {
+        DocumentReference docRef = db.collection("wallet").document(userID);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                wallet wallet = documentSnapshot.toObject(wallet.class);
+                currentBalance = wallet.getAmount();
+                String balance = numberFormat.format(currentBalance);
+                Balance.setText(balance);
 
+
+            }
+        });
+
+
+    }
+
+   /* private void CodeInfo() {
+        db.collection("cashVoucher").document(vcode).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                cashVoucher cashVoucher = documentSnapshot.toObject(cashVoucher.class);
+                ExpireDate=cashVoucher.getExpire();
+                cash=cashVoucher.getCash();
+            }
+        });
+
+
+    }
+
+    private void addCash() {
+
+        float newbalance = cash + currentBalance;
+
+        wallet wallet = new wallet(newbalance, currentdate);
+        db.collection("wallet").document(userID).set(wallet);
+        transactionhistory transactionhistory = new transactionhistory(cash, currentdate, userID, vcode, currentBalance, newbalance);
+        db.collection("transactionhistory").add(transactionhistory);
+        cashVoucherApplied cashVoucherApplied = new cashVoucherApplied(currentdate);
+        db.collection("cashVoucherApplied").document(UniqueCashCodeID).set(cashVoucherApplied);
+        Toast.makeText(getContext(), "Anount Added", Toast.LENGTH_LONG).show();
+        applyvouchercv.setVisibility(View.GONE);
+        RowVoucher.setVisibility(View.GONE);
+        addcreditcv.setVisibility(View.VISIBLE);
+
+    }
+
+    private String voucherAlreadyApplied() {
+
+        db.collection("cashVoucherApplied").document(UniqueCashCodeID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        codealreadyapplied="CodeApplied";
+                    } else {
+                        Log.d(TAG, "No such document");
+                        codealreadyapplied=null;
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+
+        });
+
+        return codealreadyapplied;
+    }
+
+    private String voucherAvailable() {
+
+
+        db.collection("cashVoucher").document(vcode).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        Codeisthere="yes";
+                    } else {
+                        Log.d(TAG, "No such document");
+                        Codeisthere=null;
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+        return Codeisthere;
+
+
+
+           }
+
+*/
 
 }
 

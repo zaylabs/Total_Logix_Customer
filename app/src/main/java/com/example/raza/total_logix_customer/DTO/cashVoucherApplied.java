@@ -1,37 +1,31 @@
 package com.example.raza.total_logix_customer.DTO;
 
 
+import java.util.Date;
+
 public class cashVoucherApplied {
 
 
-    String cashvouchercode;
-    String userID;
+    Date dateapplied;
+
 
 
     public cashVoucherApplied(){
 
     }
 
-    public cashVoucherApplied(String cashvouchercode, String userID){
+    public cashVoucherApplied(Date dateapplied){
 
-        this.cashvouchercode=cashvouchercode;
-        this.userID=userID;
+        this.dateapplied=dateapplied;
+
     }
 
-    public String getCashvouchercode() {
-        return cashvouchercode;
+    public Date getDateapplied() {
+        return dateapplied;
     }
 
-    public void setCashvouchercode(String cashvouchercode) {
-        this.cashvouchercode = cashvouchercode;
-    }
-
-    public String getUserID() {
-        return userID;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setDateapplied(Date dateapplied) {
+        this.dateapplied = dateapplied;
     }
 }
 

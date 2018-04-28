@@ -6,9 +6,9 @@ import java.util.Date;
 public class cashVoucher {
 
 
-        private String cashvouchercode;
 
-        private Date expire;
+
+        private Date expiredate;
         private float cash;
 
 
@@ -17,28 +17,20 @@ public class cashVoucher {
 
         }
 
-        public cashVoucher(String cashvouchercode,Date expire, float cash){
+        public cashVoucher(Date expiredate, float cash){
 
 
-            this.cashvouchercode = cashvouchercode;
-            this.expire = expire;
+
+            this.expiredate = expiredate;
             this.cash = cash;
         }
 
-    public String getCashvouchercode() {
-        return cashvouchercode;
+    public Date getExpiredate() {
+        return expiredate;
     }
 
-    public void setCashvouchercode(String cashvouchercode) {
-        this.cashvouchercode = cashvouchercode;
-    }
-
-    public Date getExpire() {
-        return expire;
-    }
-
-    public void setExpire(Date expire) {
-        this.expire = expire;
+    public void setExpiredate(Date expiredate) {
+        this.expiredate = expiredate;
     }
 
     public float getCash() {
