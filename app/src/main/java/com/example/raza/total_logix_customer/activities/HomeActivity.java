@@ -491,8 +491,8 @@ public class HomeActivity extends AppCompatActivity
                             mHeader.setVisibility(GONE);
                             mFooter.setVisibility(GONE);
 
-                            openDialog();
-                            ;
+
+
                         } else
                             Toast.makeText(HomeActivity.this, R.string.Vahicle_Type_Error, Toast.LENGTH_LONG).show();
                         }

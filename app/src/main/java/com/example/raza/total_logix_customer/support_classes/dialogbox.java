@@ -74,7 +74,7 @@ public class dialogbox extends AppCompatDialogFragment {
     private float ridedistance;
     private String dropaddress;
     private String pickupaddress;
-    private String uniqueID;
+    public String uniqueID;
     private String estFare;
     private FirebaseUser user;
     private float stars;

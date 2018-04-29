@@ -23,6 +23,7 @@ public class currentRideAdapter extends RecyclerView.Adapter<currentRideAdapter.
 
 private final Context context;
 private final List<acceptRequest> dHistory;
+    private NumberFormat RsFormat = new DecimalFormat("'Rs.'#");
 
 public currentRideAdapter(Context context, List<acceptRequest> dHistory){
 
@@ -59,7 +60,7 @@ public void onBindViewHolder(@NonNull currentRideAdapter.ViewHolder holder, int 
         holder.mBoxes.setText(dHistory.get(position).getBoxes());
         holder.mWeight.setText(dHistory.get(position).getWeight());
         holder.mPaidVia.setText(dHistory.get(position).getPaidvia());
-        holder.mfare.setText(dHistory.get(position).getRidefare());
+        holder.mfare.setText(RsFormat.format(dHistory.get(position).getRidefare()));
         holder.mEstRideDistance.setText(numberFormat.format(dHistory.get(position).getEstDistance()));
         holder.mDatetime.setText(dateFormat.format(dHistory.get(position).getDate()));
         holder.mWaiting.setText(watingFormat.format(dHistory.get(position).getWaitingtime()));

@@ -35,6 +35,7 @@ public class CurrentRideActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FrameLayout mProgressLayout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
