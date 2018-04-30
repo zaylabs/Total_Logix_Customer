@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -48,6 +49,7 @@ import android.widget.Toast;
 
 import com.example.raza.total_logix_customer.BuildConfig;
 import com.example.raza.total_logix_customer.DTO.homeinfoPass;
+import com.example.raza.total_logix_customer.DTO.settings;
 import com.example.raza.total_logix_customer.DTO.transactionhistory;
 import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.adapters.HttpDataHandler;
@@ -94,6 +96,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -118,7 +124,7 @@ public class HomeActivity extends AppCompatActivity
     public String mdistancekm;
 
     public android.support.v4.app.FragmentManager sFm = getSupportFragmentManager();
-
+    private FirebaseFirestore db;
     private Place mPlacePickup, mPlaceDrop;
     public FrameLayout mHeader;
     public FrameLayout mFooter;
@@ -266,11 +272,20 @@ public class HomeActivity extends AppCompatActivity
         mCarType2 = findViewById(R.id.radio_CarType2);
         mFareEstimate=findViewById(R.id.fareestimate_tv);
         mFareEstimateLabel=findViewById(R.id.fareest_lble);
-        SuzukiRate= 200;
-        RikshaRate=90;
-        SuzukiBase=600;
-        RikshaBase=270;
-        DriverLoadingRate=150;
+        db = FirebaseFirestore.getInstance();
+        db.collection("settings").document("rates").addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                settings settings = documentSnapshot.toObject(settings.class);
+                SuzukiRate = settings.getSuzukirate();
+                RikshaRate = settings.getRiksharate();
+                SuzukiBase = settings.getSuzukibase();
+                RikshaBase = settings.getRikshabase();
+                DriverLoadingRate = settings.getDriverloadingRate();
+
+            }
+        });
+
 
         if (mCarType1.isChecked()) {
             vt="Suzuki";
@@ -490,7 +505,7 @@ public class HomeActivity extends AppCompatActivity
                             }
                             mHeader.setVisibility(GONE);
                             mFooter.setVisibility(GONE);
-
+                            openDialog();
 
 
                         } else

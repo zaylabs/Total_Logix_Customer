@@ -43,10 +43,10 @@
 
 
                     <TableRow
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:padding="10dp"
+                        android:layout_marginStart="@dimen/margin_5"
+                        android:paddingBottom="10dp"
                         android:gravity="center">
 
                         <TextView
@@ -71,13 +71,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="0dp"
-                        android:padding="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_marginStart="@dimen/margin_5"
                         android:gravity="center"
                         >
 
                         <TextView
                             android:id="@+id/textView6"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/number_of_boxes"
                             android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -98,10 +99,11 @@
 
                     <TableRow
                         android:gravity="center"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="0dp"
-                        android:padding="10dp">
+                        android:layout_marginStart="@dimen/margin_5"
+                        android:paddingBottom="20dp">
 
                         <TextView
                             android:id="@+id/textView7"
@@ -127,11 +129,12 @@
 
 
                     <TableRow
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="0dp"
-                        android:padding="20dp"
+                        android:paddingBottom="20dp"
                         android:gravity="center"
+                        android:layout_marginStart="@dimen/margin_5"
                         >
 
                         <TextView
