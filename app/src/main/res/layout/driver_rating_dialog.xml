@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="5dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        >
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:id="@+id/mapview"
+            android:src="@drawable/ic_launcher"
+            android:foregroundGravity="center"
+
+            />
+
+
+
+        <LinearLayout
+            android:background="@color/white"
+            android:id="@+id/linear_child1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mapview"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+
+                >
+
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:padding="10dp"
+                    android:gravity="center">
+
+                    <TextView
+
+                        android:text="Rate Driver"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                        />
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:padding="10dp"
+                    android:gravity="center">
+                    <RatingBar
+                        android:id="@+id/payDriverRating"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:clickable="true"
+                        />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:padding="10dp"
+                    android:gravity="center">
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/btn_ratingsubmit"
+                        android:layout_width="@dimen/login_width"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/margin_20"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:background="@drawable/ripple_effect"
+                        android:text="Submit"
+                        android:textColor="@color/black" />
+
+                </TableRow>
+
+            </TableLayout>
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>
