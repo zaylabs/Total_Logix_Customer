@@ -226,7 +226,7 @@ public class dialogbox extends AppCompatDialogFragment {
     }
 
     private void getCustomerInfo(){
-        DocumentReference docRef = db.collection("customers").document(userID);
+            DocumentReference docRef = db.collection("customers").document(userID);
 
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -234,7 +234,7 @@ public class dialogbox extends AppCompatDialogFragment {
                 userProfile profile = documentSnapshot.toObject(userProfile.class);
                 name =profile.getName();
                 phone=profile.getPhone();
-                stars=profile.getStars();
+
 
 
             }

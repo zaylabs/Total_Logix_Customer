@@ -10,13 +10,14 @@ public class userProfile {
     private String phone;
     private Date createDate;
     private Date updateDate;
+    private float totalrides;
     private float stars;
 
 
     public userProfile(){
 
     }
-    public userProfile(String name, String email, String dpURL, String phone, Date createDate, Date updateDate, float stars){
+    public userProfile(String name, String email, String dpURL, String phone, Date createDate, Date updateDate,float totalrides, float stars){
 
         this.name = name;
         this.email = email;
@@ -24,6 +25,7 @@ public class userProfile {
         this.phone = phone;
         this.createDate = createDate;
         this.updateDate = updateDate;
+        this.totalrides = totalrides;
         this.stars=stars;
     }
 
@@ -82,5 +84,13 @@ public class userProfile {
 
     public void setStars(float stars) {
         this.stars = stars;
+    }
+
+    public float getTotalrides() {
+        return totalrides;
+    }
+
+    public void setTotalrides(float totalrides) {
+        this.totalrides = totalrides;
     }
 }

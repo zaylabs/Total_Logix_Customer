@@ -69,6 +69,7 @@ public class profileFragment extends android.app.Fragment implements View.OnClic
     private String photodp;
     private String mImageLink;
     private float stars;
+    private float totalrides;
     public profileFragment() {
         // Required empty public constructor
     }
@@ -202,7 +203,7 @@ public class profileFragment extends android.app.Fragment implements View.OnClic
                 createdate=profile.getCreateDate();
                 stars=profile.getStars();
                 mRatingBar.setRating(stars);
-
+                totalrides=profile.getTotalrides();
             }
         });
 
@@ -214,7 +215,7 @@ public class profileFragment extends android.app.Fragment implements View.OnClic
         String phone = mPhone.getText().toString();
         String name = mName.getText().toString();
         updatedate=Calendar.getInstance().getTime();
-        userProfile profile = new userProfile(name,email,dpURL,phone,createdate,updatedate,stars);
+        userProfile profile = new userProfile(name,email,dpURL,phone,createdate,updatedate,totalrides,stars);
         db.collection("customers").document(userID).set(profile);
 
     }

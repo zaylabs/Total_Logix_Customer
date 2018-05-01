@@ -187,7 +187,8 @@ public class RegisterActivity extends BaseActivity {
 
 
         Integer stars= 0;
-        userProfile profile = new userProfile(name, mEmail.getText().toString(), null, phone, currentDate, null,stars);
+        Integer totalrides=0;
+        userProfile profile = new userProfile(name, mEmail.getText().toString(), null, phone, currentDate, null,totalrides,stars);
         db.collection("customers").document(userID).set(profile);
         wallet wallet = new wallet(0,currentDate);
         db.collection("wallet").document(userID).set(wallet);
