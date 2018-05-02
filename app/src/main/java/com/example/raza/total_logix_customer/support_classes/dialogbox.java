@@ -180,8 +180,8 @@ public class dialogbox extends AppCompatDialogFragment {
 
 
 
-                            customerRequest customerRequest = new customerRequest(name, pickup, drop, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, uniqueID,stars,gatepass);
-                            customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", 0, null, null, 0, uniqueID,null,ridestar,ridedistance,gatepass);
+                            customerRequest customerRequest = new customerRequest(name, pickup, drop, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, uniqueID,stars,gatepass,date);
+                            customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", 0, null, null, 0, uniqueID,null,ridestar,ridedistance,gatepass,date);
 
                             db.collection("customerRequest").document(uniqueID).set(customerRequest);
                             db.collection("CustomerHistory").document(uniqueID).set(customerHistory);

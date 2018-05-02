@@ -2,6 +2,7 @@ package com.example.raza.total_logix_customer.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 
 import com.example.raza.total_logix_customer.DTO.driverRating;
-import com.example.raza.total_logix_customer.DTO.ratingUpdate;
 import com.example.raza.total_logix_customer.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,7 +44,7 @@ public class CurrentRideActivity extends AppCompatActivity {
     private List<acceptRequest> dHistory;
     private acceptRequest acceptRequest;
     private currentRideAdapter currentRideAdapter;
-    private String driverID;
+    private String userId;
     private String TAG;
     private FirebaseAuth mAuth;
     private FrameLayout mProgressLayout;
@@ -52,8 +52,8 @@ public class CurrentRideActivity extends AppCompatActivity {
     private float oldrating;
     private float totalride;
     private float newrating;
-    private String currentdriver;
-
+    private String driverId;
+    private float updatedrating;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +61,7 @@ public class CurrentRideActivity extends AppCompatActivity {
         firestoreDB = FirebaseFirestore.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
-        driverID = mAuth.getCurrentUser().getUid();
+        userId = mAuth.getCurrentUser().getUid();
 
         mProgressLayout=(FrameLayout)findViewById(R.id.ProgressLayout);
         mProgressbar=(ProgressBar)findViewById(R.id.progressBar_customer);
@@ -72,7 +72,7 @@ public class CurrentRideActivity extends AppCompatActivity {
         mDhistory.setLayoutManager(new LinearLayoutManager(this));
         mDhistory.setAdapter(currentRideAdapter);
 
-        firestoreDB.collection("acceptRequest").whereEqualTo("cid", driverID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firestoreDB.collection("acceptRequest").whereEqualTo("cid", userId).addSnapshotListener(new EventListener<QuerySnapshot>() {
 
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
@@ -102,86 +102,77 @@ public class CurrentRideActivity extends AppCompatActivity {
                             myDialog = new Dialog(CurrentRideActivity.this);
                             myDialog.setContentView(R.layout.driver_rating_dialog);
                             myDialog.show();
+                            myDialog.setCancelable(false);
+                            myDialog.setCanceledOnTouchOutside(false);
                             final RatingBar mRatingbar=(RatingBar)myDialog.findViewById(R.id.payDriverRating);
                             final AppCompatButton mSubmit=(AppCompatButton)myDialog.findViewById(R.id.btn_ratingsubmit);
 
                             mSubmit.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    firestoreDB.collection("driverRating").document(driverID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+
+
+
+                                    firestoreDB.collection("driverRating").document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                                        driverRating driverRating = documentSnapshot.toObject(com.example.raza.total_logix_customer.DTO.driverRating.class);
-                                        oldrating=driverRating.getOldrating();
-                                        totalride=driverRating.getTotalride();
-                                        currentdriver=driverRating.getDriverID();
+                                            driverRating driverRating = documentSnapshot.toObject(com.example.raza.total_logix_customer.DTO.driverRating.class);
+                                            if (driverRating != null) {
+                                                oldrating = driverRating.getOldrating();
+                                            } else{
+                                                oldrating = 0;
+                                           }
+
+                                           totalride = driverRating.getTotalride();
+
+                                            driverId = driverRating.getDriverID();
+                                            newrating = mRatingbar.getRating();
+                                            if (totalride > 0) {
+                                                updatedrating = (newrating + oldrating) / totalride;
+                                            } else {
+                                                updatedrating = newrating;
+                                                totalride=1;
+                                            }
+
+                                            Map<String, Object> driverUpdates = new HashMap<>();
+                                            driverUpdates.put("totalrides",totalride);
+                                            driverUpdates.put("stars",updatedrating);
+
+                                            String Temp = driverId;
+//HGofXOnckgRHwl2g21e5CQ30Wly2
+                                            firestoreDB.collection("drivers").document(driverId)
+                                                    .update(driverUpdates);
 
                                         }
                                     });
-                                    newrating = mRatingbar.getRating();
 
-                                    float updatedrating=(newrating+oldrating)/totalride;
-                                    ratingUpdate ratingUpdate = new ratingUpdate(totalride,updatedrating);
-
-                                    Map<String, Object> driverUpdates = new HashMap<>();
-                                    driverUpdates.put("totalrides",totalride);
-                                    driverUpdates.put("stars",updatedrating);
-
-
-
-                                    firestoreDB.collection("drivers").document(currentdriver)
-                                            .update(driverUpdates);
-
-
-
-                                    /*firestoreDB.collection("drivers").document(currentdriver).update("totalrides", totalride)
+                               /*     firestoreDB.collection("driverRating").document(userId).delete()
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
+                                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                               */                     Intent intent = new Intent(CurrentRideActivity.this, HomeActivity.class);
+                                                    startActivity(intent);
+                                 /*                   finish();
                                                 }
+
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error updating document", e);
-                                                }
-                                            });
-
-                                    firestoreDB.collection("drivers").document(currentdriver).update("stars", updatedrating)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d(TAG, "DocumentSnapshot successfully updated!");
-                                                    firestoreDB.collection("driverRating").document(driverID).delete()
-                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void aVoid) {
-                                                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                                                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
-                                                                    Intent intent = new Intent(CurrentRideActivity.this, HomeActivity.class);
-                                                                    CurrentRideActivity.this.startActivity(intent);
-                                                                }
-
-                                                            })
-                                                            .addOnFailureListener(new OnFailureListener() {
-                                                                @Override
-                                                                public void onFailure(@NonNull Exception e) {
-                                                                    Log.w(TAG, "Error deleting document", e);
-                                                                }
-                                                            });
-
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w(TAG, "Error updating document", e);
+                                                    Log.w(TAG, "Error deleting document", e);
                                                 }
                                             });
 */
+
+
+
                                 }
                             });
+
+
+
 
                             break;
                     }

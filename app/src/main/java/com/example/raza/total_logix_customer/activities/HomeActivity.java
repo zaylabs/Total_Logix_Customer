@@ -34,15 +34,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +47,6 @@ import android.widget.Toast;
 import com.example.raza.total_logix_customer.BuildConfig;
 import com.example.raza.total_logix_customer.DTO.homeinfoPass;
 import com.example.raza.total_logix_customer.DTO.settings;
-import com.example.raza.total_logix_customer.DTO.transactionhistory;
 import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.adapters.HttpDataHandler;
 import com.example.raza.total_logix_customer.adapters.PlaceAutocompleteAdapter;
@@ -106,7 +102,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -617,6 +612,7 @@ public class HomeActivity extends AppCompatActivity
 
                 ft.replace(R.id.cm, new historyFragment());
                 ft.commit();
+
                 break;
 
             case R.id.transactionhistory:
@@ -626,6 +622,7 @@ public class HomeActivity extends AppCompatActivity
 
                 ft.replace(R.id.cm, new transactionhistoryFragment());
                 ft.commit();
+
                 break;
             case R.id.wallet:
                 mHeader.setVisibility(GONE);
@@ -644,11 +641,12 @@ public class HomeActivity extends AppCompatActivity
                 ft.commit();
                 break;
             case R.id.help:
-
+                getUserInfo();
                 break;
 
             case R.id.logout:
                 mAuth.signOut();
+
                 break;
 
             default:
@@ -665,7 +663,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(firebaseAuthListener);
+        //mAuth.addAuthStateListener(firebaseAuthListener);
         startLocationUpdates();
 
 
@@ -674,8 +672,8 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        mAuth.removeAuthStateListener(firebaseAuthListener);
-        stopLocationUpdates();
+     //   mAuth.removeAuthStateListener(firebaseAuthListener);
+        //stopLocationUpdates();
         super.onDestroy();
 
     }
@@ -684,8 +682,8 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     protected void onStop() {
-        mAuth.removeAuthStateListener(firebaseAuthListener);
-        stopLocationUpdates();
+       // mAuth.removeAuthStateListener(firebaseAuthListener);
+        //stopLocationUpdates();
         super.onStop();
 
     }
