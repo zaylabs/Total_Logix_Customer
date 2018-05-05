@@ -51,6 +51,7 @@ import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.adapters.HttpDataHandler;
 import com.example.raza.total_logix_customer.adapters.PlaceAutocompleteAdapter;
 
+import com.example.raza.total_logix_customer.fragment.helpFragment;
 import com.example.raza.total_logix_customer.fragment.historyFragment;
 import com.example.raza.total_logix_customer.fragment.profileFragment;
 import com.example.raza.total_logix_customer.fragment.transactionhistoryFragment;
@@ -96,6 +97,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -242,7 +244,7 @@ public class HomeActivity extends AppCompatActivity
     public String mPickupString;
     public String mDropString;
     private TextView mFareEstimateLabel;
-
+    private ListenerRegistration settingslistner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -268,7 +270,7 @@ public class HomeActivity extends AppCompatActivity
         mFareEstimate=findViewById(R.id.fareestimate_tv);
         mFareEstimateLabel=findViewById(R.id.fareest_lble);
         db = FirebaseFirestore.getInstance();
-        db.collection("settings").document("rates").addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        settingslistner=db.collection("settings").document("rates").addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 settings settings = documentSnapshot.toObject(settings.class);
@@ -319,7 +321,7 @@ public class HomeActivity extends AppCompatActivity
         mRadioGroup.setOnClickedButtonListener(new RadioRealButtonGroup.OnClickedButtonListener() {
             @Override
             public void onClickedButton(RadioRealButton button, int position) {
-                Toast.makeText(HomeActivity.this, "Clicked! Position: " + position, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(HomeActivity.this, "Clicked! Position: " + position, Toast.LENGTH_SHORT).show();
                 if (position!=1){
                     vt=("Suzuki");
                     if (distance!=null) {
@@ -527,23 +529,42 @@ public class HomeActivity extends AppCompatActivity
 
     public void fareCarCalculator() {
         Double result = 0.0;
-        Double b;
-
+        Double b=0.0;
+        Double c=3.0;
         Double a = Double.parseDouble(distance.toString());
         if (!(mCarType2.isChecked())) {
-            b = (a * SuzukiRate) + SuzukiBase;
-            if ((mDriverLoading_et.isChecked())) {
-                result = b + DriverLoadingRate;
-            } else {
-                result = b;
+            if (a<c){
+                b= Double.valueOf(SuzukiBase);
+                if ((mDriverLoading_et.isChecked())) {
+                    result = b + DriverLoadingRate;
+                } else {
+                    result = b;
+                }
+            }else {
+                b = (a * SuzukiRate);
+                if ((mDriverLoading_et.isChecked())) {
+                    result = b + DriverLoadingRate;
+                } else {
+                    result = b;
+                }
             }
+
         } else if (!(mCarType1.isChecked())) {
-            b = (a * RikshaRate) + RikshaBase;
-            if ((mDriverLoading_et.isChecked())) {
-                result = b + DriverLoadingRate;
-            } else {
-                result = b;
-            }
+            if (a<c) {
+                b = Double.valueOf(RikshaBase);
+                if ((mDriverLoading_et.isChecked())) {
+                    result = b + DriverLoadingRate;
+                } else {
+                    result = b;
+                }
+            }else{
+                b=(a * RikshaRate);
+                if ((mDriverLoading_et.isChecked())) {
+                    result = b + DriverLoadingRate;
+                } else {
+                    result = b;
+                }
+                }
         }
         NumberFormat numberFormat = new DecimalFormat("'Rs.'#");
         mFareEstimateLabel.setVisibility(View.VISIBLE);
@@ -587,6 +608,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
         FragmentManager fm = getFragmentManager();
         int id = item.getItemId();
 
@@ -595,6 +617,7 @@ public class HomeActivity extends AppCompatActivity
             FragmentTransaction ft = getFragmentManager().beginTransaction();
         switch (item.getItemId()) {
             case R.id.home:
+                mAuth.addAuthStateListener(firebaseAuthListener);
                 mHeader.setVisibility(View.VISIBLE);
                 mFooter.setVisibility(View.VISIBLE);
                 if (!sMapFragment.isAdded()) {
@@ -641,10 +664,17 @@ public class HomeActivity extends AppCompatActivity
                 ft.commit();
                 break;
             case R.id.help:
-                getUserInfo();
+                mHeader.setVisibility(GONE);
+                mFooter.setVisibility(GONE);
+
+
+                ft.replace(R.id.cm, new helpFragment());
+                ft.commit();
+
                 break;
 
             case R.id.logout:
+                settingslistner.remove();
                 mAuth.signOut();
 
                 break;
@@ -656,6 +686,7 @@ public class HomeActivity extends AppCompatActivity
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -663,7 +694,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        //mAuth.addAuthStateListener(firebaseAuthListener);
+        mAuth.addAuthStateListener(firebaseAuthListener);
         startLocationUpdates();
 
 
@@ -675,6 +706,12 @@ public class HomeActivity extends AppCompatActivity
      //   mAuth.removeAuthStateListener(firebaseAuthListener);
         //stopLocationUpdates();
         super.onDestroy();
+        stopLocationUpdates();
+        settingslistner.remove();
+        mAuth.removeAuthStateListener(firebaseAuthListener);
+
+
+
 
     }
 
@@ -682,7 +719,7 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     protected void onStop() {
-       // mAuth.removeAuthStateListener(firebaseAuthListener);
+        mAuth.removeAuthStateListener(firebaseAuthListener);
         //stopLocationUpdates();
         super.onStop();
 
@@ -1199,12 +1236,7 @@ public class HomeActivity extends AppCompatActivity
         super.onResume();
         // Within {@code onPause()}, we remove location updates. Here, we resume receiving
         // location updates if the user has requested them.
-        if (mRequestingLocationUpdates && checkPermissions()) {
-            startLocationUpdates();
-            updateUI();
-        } else if (!checkPermissions()) {
-            requestPermissions();
-        }
+
     }
 
     @Override
@@ -1212,7 +1244,7 @@ public class HomeActivity extends AppCompatActivity
         super.onPause();
 
         // Remove location updates to save battery.
-        stopLocationUpdates();
+
 
     }
 

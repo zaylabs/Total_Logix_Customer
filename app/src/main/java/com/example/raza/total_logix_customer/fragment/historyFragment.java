@@ -18,6 +18,7 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class historyFragment extends android.app.Fragment {
     private String customerID;
     private String TAG;
     private FirebaseAuth mAuth;
-
+    private ListenerRegistration driverHistoryListner;
 
     public historyFragment() {
         // Required empty public constructor
@@ -64,7 +65,7 @@ public class historyFragment extends android.app.Fragment {
         mDhistory.setAdapter(driverHistoryAdapter);
 
         // firestoreDB.collection("DriverHistory").whereEqualTo("driverid", driverID).
-        firestoreDB.collection("DriverHistory").whereEqualTo("cid", customerID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        driverHistoryListner =firestoreDB.collection("DriverHistory").whereEqualTo("cid", customerID).addSnapshotListener(new EventListener<QuerySnapshot>() {
 
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
@@ -99,4 +100,10 @@ public class historyFragment extends android.app.Fragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        driverHistoryListner.remove();
+
+    }
 }

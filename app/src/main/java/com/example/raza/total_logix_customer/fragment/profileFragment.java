@@ -272,4 +272,9 @@ public class profileFragment extends android.app.Fragment implements View.OnClic
         }
         mAuth.signOut();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

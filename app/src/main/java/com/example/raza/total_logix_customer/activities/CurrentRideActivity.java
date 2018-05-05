@@ -28,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.raza.total_logix_customer.recylerViewAdapter.currentRideAdapter;
 import com.example.raza.total_logix_customer.DTO.acceptRequest;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -54,6 +55,9 @@ public class CurrentRideActivity extends AppCompatActivity {
     private float newrating;
     private String driverId;
     private float updatedrating;
+    private ListenerRegistration acceptrequestlistner;
+    private ListenerRegistration driverratinglistner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +76,7 @@ public class CurrentRideActivity extends AppCompatActivity {
         mDhistory.setLayoutManager(new LinearLayoutManager(this));
         mDhistory.setAdapter(currentRideAdapter);
 
-        firestoreDB.collection("acceptRequest").whereEqualTo("cid", userId).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        acceptrequestlistner=firestoreDB.collection("acceptRequest").whereEqualTo("cid", userId).addSnapshotListener(new EventListener<QuerySnapshot>() {
 
             @Override
             public void onEvent(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
@@ -113,7 +117,7 @@ public class CurrentRideActivity extends AppCompatActivity {
 
 
 
-                                    firestoreDB.collection("driverRating").document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                   driverratinglistner= firestoreDB.collection("driverRating").document(userId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                                             driverRating driverRating = documentSnapshot.toObject(com.example.raza.total_logix_customer.DTO.driverRating.class);
@@ -181,5 +185,13 @@ public class CurrentRideActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        acceptrequestlistner.remove();
+        driverratinglistner.remove();
     }
 }

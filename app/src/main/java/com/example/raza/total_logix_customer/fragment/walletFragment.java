@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.raza.total_logix_customer.DTO.cashVoucher;
 import com.example.raza.total_logix_customer.DTO.cashVoucherApplied;
+import com.example.raza.total_logix_customer.DTO.totalearning;
 import com.example.raza.total_logix_customer.DTO.transactionhistory;
 import com.example.raza.total_logix_customer.DTO.wallet;
 import com.example.raza.total_logix_customer.activities.CreditCardActivity;
@@ -34,6 +35,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DecimalFormat;
@@ -41,7 +43,9 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -78,6 +82,10 @@ public class walletFragment extends android.app.Fragment {
     private String codealreadyapplied;
     private String UniqueCashCodeID;
     private String Codeisthere;
+    private ListenerRegistration totalearninggetlistner;
+    private float totalearningmoneyinwalletsold;
+    private float totalearningmoneyinwallets;
+    private float totalearningmoneydate;
 
     public walletFragment() {
         // Required empty public constructor
@@ -205,6 +213,11 @@ public class walletFragment extends android.app.Fragment {
                                                                 db.collection("transactionhistory").add(transactionhistory);
                                                                 cashVoucherApplied cashVoucherApplied = new cashVoucherApplied(currentdate);
                                                                 db.collection("cashVoucherApplied").document(UniqueCashCodeID).set(cashVoucherApplied);
+                                                                        totalearningmoneyinwallets= cash+totalearningmoneyinwalletsold;
+                                                                Map<String, Object> totalearningUpdates = new HashMap<>();
+                                                                totalearningUpdates.put("moneyinwallets", totalearningmoneyinwallets);
+                                                                totalearningUpdates.put("dateupdated", currentdate);
+                                                                db.collection("totalearning").document("admin").update(totalearningUpdates);
                                                                 Toast.makeText(getContext(), "Anount Added", Toast.LENGTH_LONG).show();
                                                                 getBalance();
                                                                 applyvouchercv.setVisibility(View.GONE);
@@ -265,92 +278,22 @@ public class walletFragment extends android.app.Fragment {
             }
         });
 
-
-    }
-
-   /* private void CodeInfo() {
-        db.collection("cashVoucher").document(vcode).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        DocumentReference docRef2=db.collection("totalearning").document("admin");
+        docRef2.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                cashVoucher cashVoucher = documentSnapshot.toObject(cashVoucher.class);
-                ExpireDate=cashVoucher.getExpire();
-                cash=cashVoucher.getCash();
+                totalearning totalearning = documentSnapshot.toObject(totalearning.class);
+                totalearningmoneyinwalletsold=totalearning.getMoneyinwallets();
             }
         });
 
-
     }
 
-    private void addCash() {
 
-        float newbalance = cash + currentBalance;
-
-        wallet wallet = new wallet(newbalance, currentdate);
-        db.collection("wallet").document(userID).set(wallet);
-        transactionhistory transactionhistory = new transactionhistory(cash, currentdate, userID, vcode, currentBalance, newbalance);
-        db.collection("transactionhistory").add(transactionhistory);
-        cashVoucherApplied cashVoucherApplied = new cashVoucherApplied(currentdate);
-        db.collection("cashVoucherApplied").document(UniqueCashCodeID).set(cashVoucherApplied);
-        Toast.makeText(getContext(), "Anount Added", Toast.LENGTH_LONG).show();
-        applyvouchercv.setVisibility(View.GONE);
-        RowVoucher.setVisibility(View.GONE);
-        addcreditcv.setVisibility(View.VISIBLE);
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
-
-    private String voucherAlreadyApplied() {
-
-        db.collection("cashVoucherApplied").document(UniqueCashCodeID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        codealreadyapplied="CodeApplied";
-                    } else {
-                        Log.d(TAG, "No such document");
-                        codealreadyapplied=null;
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-
-        });
-
-        return codealreadyapplied;
-    }
-
-    private String voucherAvailable() {
-
-
-        db.collection("cashVoucher").document(vcode).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        Codeisthere="yes";
-                    } else {
-                        Log.d(TAG, "No such document");
-                        Codeisthere=null;
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-
-        return Codeisthere;
-
-
-
-           }
-
-*/
-
 }
 
 
