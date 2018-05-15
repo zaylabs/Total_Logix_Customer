@@ -67,5 +67,8 @@ dependencies {
 
     implementation 'io.card:android-sdk:5.5.1'
 
+    //LocationUpdateTry
+    implementation 'io.nlopez.smartlocation:library:3.3.3'
+
 }
 apply plugin: 'com.google.gms.google-services'

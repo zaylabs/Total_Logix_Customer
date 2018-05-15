@@ -13,6 +13,19 @@
             android:id="@+id/completed_rides"
             android:icon="@mipmap/ic_thumb_up_black_24dp"
             android:title="@string/menu_completed" />
+
+
+        <item
+            android:id="@+id/pending_request"
+            android:icon="@drawable/ic_hourglass_full_black_24dp"
+            android:title="@string/Munu_pending_request" />
+
+        <item
+            android:id="@+id/current_ride"
+            android:icon="@drawable/ic_grade_black_24dp"
+            android:title="@string/Menu_current_logix" />
+
+
         <item
             android:id="@+id/transactionhistory"
             android:icon="@drawable/ic_account_balance_wallet_black_24dp"

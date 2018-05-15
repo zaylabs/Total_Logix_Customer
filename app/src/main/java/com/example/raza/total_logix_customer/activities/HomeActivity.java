@@ -51,8 +51,12 @@ import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.adapters.HttpDataHandler;
 import com.example.raza.total_logix_customer.adapters.PlaceAutocompleteAdapter;
 
+import com.example.raza.total_logix_customer.fragment.acceptRequestFragment;
+import com.example.raza.total_logix_customer.fragment.customerRequestFragment;
 import com.example.raza.total_logix_customer.fragment.helpFragment;
 import com.example.raza.total_logix_customer.fragment.historyFragment;
+import com.example.raza.total_logix_customer.fragment.hovermapFragment;
+import com.example.raza.total_logix_customer.fragment.pendingRequestFragment;
 import com.example.raza.total_logix_customer.fragment.profileFragment;
 import com.example.raza.total_logix_customer.fragment.transactionhistoryFragment;
 import com.example.raza.total_logix_customer.fragment.walletFragment;
@@ -121,6 +125,10 @@ public class HomeActivity extends AppCompatActivity
     public String mdistancekm;
 
     public android.support.v4.app.FragmentManager sFm = getSupportFragmentManager();
+
+
+
+
     private FirebaseFirestore db;
     private Place mPlacePickup, mPlaceDrop;
     public FrameLayout mHeader;
@@ -223,6 +231,7 @@ public class HomeActivity extends AppCompatActivity
     private TextView mNameField, mFareEstimate;
     private ImageView  mMyLocation, mClear;
     private de.hdodenhof.circleimageview.CircleImageView mDisplayPic;
+
 
     public double lat, lng;
     public DrawerLayout drawer;
@@ -358,7 +367,7 @@ public class HomeActivity extends AppCompatActivity
 
         navigationView.getMenu().getItem(0).setCheckable(true);
         FragmentManager fm = getFragmentManager();
-        android.support.v4.app.FragmentManager sFm = getSupportFragmentManager();
+        final android.support.v4.app.FragmentManager sFm = getSupportFragmentManager();
 
         if (!sMapFragment.isAdded()) {
             sFm.beginTransaction().add(R.id.map, sMapFragment).commit();
@@ -502,9 +511,16 @@ public class HomeActivity extends AppCompatActivity
                             }
                             mHeader.setVisibility(GONE);
                             mFooter.setVisibility(GONE);
-                            openDialog();
-
-
+                            if (sMapFragment.isAdded()){
+                                sFm.beginTransaction().hide(sMapFragment).commit();
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.replace(R.id.cm, new customerRequestFragment());
+                            ft.commit();
+                        }else {
+                            FragmentTransaction ft = getFragmentManager().beginTransaction();
+                            ft.replace(R.id.cm, new customerRequestFragment());
+                            ft.commit();
+                        }
                         } else
                             Toast.makeText(HomeActivity.this, R.string.Vahicle_Type_Error, Toast.LENGTH_LONG).show();
                         }
@@ -518,6 +534,7 @@ public class HomeActivity extends AppCompatActivity
 
 
     }
+/**//*
 
     private void openDialog() {
             dialogbox dialogbox = new dialogbox();
@@ -525,6 +542,7 @@ public class HomeActivity extends AppCompatActivity
 
         }
 
+*/
 
 
     public void fareCarCalculator() {
@@ -638,6 +656,27 @@ public class HomeActivity extends AppCompatActivity
 
                 break;
 
+            case R.id.pending_request:
+                mHeader.setVisibility(GONE);
+                mFooter.setVisibility(GONE);
+
+
+                ft.replace(R.id.cm, new pendingRequestFragment());
+                ft.commit();
+
+                break;
+
+            case R.id.current_ride:
+                mHeader.setVisibility(GONE);
+                mFooter.setVisibility(GONE);
+
+
+                    ft.replace(R.id.cm, new acceptRequestFragment());
+                    ft.commit();
+
+                break;
+
+
             case R.id.transactionhistory:
                 mHeader.setVisibility(GONE);
                 mFooter.setVisibility(GONE);
@@ -668,7 +707,7 @@ public class HomeActivity extends AppCompatActivity
                 mFooter.setVisibility(GONE);
 
 
-                ft.replace(R.id.cm, new helpFragment());
+                ft.replace(R.id.cm, new hovermapFragment() );
                 ft.commit();
 
                 break;

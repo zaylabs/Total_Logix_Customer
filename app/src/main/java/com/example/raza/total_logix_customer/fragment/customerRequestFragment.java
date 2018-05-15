@@ -1,24 +1,17 @@
-package com.example.raza.total_logix_customer.support_classes;
+package com.example.raza.total_logix_customer.fragment;
 
-
-import android.app.Dialog;
-import android.app.FragmentHostCallback;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,10 +19,7 @@ import com.example.raza.total_logix_customer.DTO.customerHistory;
 import com.example.raza.total_logix_customer.DTO.customerRequest;
 import com.example.raza.total_logix_customer.DTO.userProfile;
 import com.example.raza.total_logix_customer.R;
-import com.example.raza.total_logix_customer.activities.CurrentRideActivity;
 import com.example.raza.total_logix_customer.activities.HomeActivity;
-import com.example.raza.total_logix_customer.fragment.acceptRequestFragment;
-import com.example.raza.total_logix_customer.fragment.walletFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,8 +37,7 @@ import java.util.Date;
 import static android.view.View.GONE;
 
 
-public class dialogbox extends AppCompatDialogFragment {
-
+public class customerRequestFragment extends android.app.Fragment {
 
     private Spinner mDescription_et;
 
@@ -89,16 +78,17 @@ public class dialogbox extends AppCompatDialogFragment {
     private FrameLayout mHeader;
     private FrameLayout mFooter;
 
+
+
+    public customerRequestFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-
-
-
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        final View view = inflater.inflate(R.layout.additional_detail_dialog,null);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_customer_request, container, false);
 
         db = FirebaseFirestore.getInstance();
 
@@ -108,12 +98,17 @@ public class dialogbox extends AppCompatDialogFragment {
         mNoBoxes=(com.travijuu.numberpicker.library.NumberPicker)view.findViewById(R.id.number_Boxes_picker);
         mDescription_et=(Spinner)view.findViewById(R.id.discription);
         mGatepass=(Button)view.findViewById(R.id.gatepass);
+        mConfirm=(Button)view.findViewById(R.id.request_confirm);
+        mCancel=(Button)view.findViewById(R.id.request_cancel);
+
         mHeader=((HomeActivity)getActivity()).mHeader;
         mFooter=((HomeActivity)getActivity()).mFooter;
         pickupLatLng=((HomeActivity)getActivity()).mPickUpLatLng;
         dropLatLng= ((HomeActivity)getActivity()).mDropLatLng;
         pickup = new GeoPoint(pickupLatLng.latitude,pickupLatLng.longitude);
         drop=new GeoPoint(dropLatLng.latitude,dropLatLng.longitude);
+
+
 
         ridedistance=((HomeActivity) getActivity()).distance;
 
@@ -155,64 +150,43 @@ public class dialogbox extends AppCompatDialogFragment {
         addItemOnCargo();
         getCustomerInfo();
 
-        builder.setTitle("Additional Details");
+        mConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gatepass="";
 
-        builder.setView(view)
+                weight= String.valueOf(mNoBoxes.getValue())+"KG";
+                boxes= String.valueOf(mWeight_picker.getValue());
+
+                if (weight!=null && boxes != null) {
+                    if (description!=null) {
+
+
+                        user = FirebaseAuth.getInstance().getCurrentUser();
 
 
 
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mHeader.setVisibility(View.VISIBLE);
-                        mFooter.setVisibility(View.VISIBLE);
 
+                        customerRequest customerRequest = new customerRequest(name, pickup, drop, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, uniqueID,stars,gatepass,date);
+                        customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", 0, null, null, 0, uniqueID,null,ridestar,ridedistance,gatepass,date);
+
+                        db.collection("customerRequest").document(uniqueID).set(customerRequest);
+                        db.collection("CustomerHistory").document(uniqueID).set(customerHistory);
+                        currentRide();
+                    }else {
+                        Toast.makeText(getContext(), "Kindly Select Cargo Type", Toast.LENGTH_LONG).show();
                     }
-                })
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        gatepass="";
-
-                        weight= String.valueOf(mNoBoxes.getValue())+"KG";
-                        boxes= String.valueOf(mWeight_picker.getValue());
-
-                        if (weight!=null && boxes != null) {
-                        if (description!=null) {
-
-
-                            user = FirebaseAuth.getInstance().getCurrentUser();
-
-
-
-
-                            customerRequest customerRequest = new customerRequest(name, pickup, drop, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, uniqueID,stars,gatepass,date);
-                            customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", 0, null, null, 0, uniqueID,null,ridestar,ridedistance,gatepass,date);
-
-                            db.collection("customerRequest").document(uniqueID).set(customerRequest);
-                            db.collection("CustomerHistory").document(uniqueID).set(customerHistory);
-                            currentRide();
-                        }else {
-                            Toast.makeText(getContext(), "Kindly Select Cargo Type", Toast.LENGTH_LONG).show();
-                        }
-                        }else {
-                        Toast.makeText(getContext(), "Kindly Select weight & No.of Boxes", Toast.LENGTH_LONG).show();
-                        }
-
-
+                }else {
+                    Toast.makeText(getContext(), "Kindly Select weight & No.of Boxes", Toast.LENGTH_LONG).show();
                 }
-                });
-
-        return builder.create();
 
 
+            }
+        });
 
 
+        return view;
     }
-
-
-
-
     private void addItemOnCargo() {
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter3 = ArrayAdapter.createFromResource(getContext(), R.array.cargotype, android.R.layout.simple_spinner_dropdown_item);
@@ -224,19 +198,28 @@ public class dialogbox extends AppCompatDialogFragment {
 
     }
 
+
+
     private void currentRide() {
 
-        dismiss();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        mHeader.setVisibility(GONE);
+        mFooter.setVisibility(GONE);
 
 
-
-
+        ft.replace(R.id.cm, new acceptRequestFragment());
+        ft.commit();
 
 
     }
 
+
+
+
+
     private void getCustomerInfo(){
-            DocumentReference docRef = db.collection("customers").document(userID);
+        DocumentReference docRef = db.collection("customers").document(userID);
 
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -253,5 +236,7 @@ public class dialogbox extends AppCompatDialogFragment {
     }
 
 }
+
+
 
 

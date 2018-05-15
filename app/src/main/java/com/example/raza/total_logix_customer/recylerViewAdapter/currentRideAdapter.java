@@ -1,17 +1,24 @@
 package com.example.raza.total_logix_customer.recylerViewAdapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 
 import com.example.raza.total_logix_customer.DTO.acceptRequest;
 import com.example.raza.total_logix_customer.R;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -42,7 +49,7 @@ public currentRideAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup paren
         }
 
 @Override
-public void onBindViewHolder(@NonNull currentRideAdapter.ViewHolder holder, int position) {
+public void onBindViewHolder(@NonNull final currentRideAdapter.ViewHolder holder, int position) {
 
         NumberFormat numberFormat = new DecimalFormat("#.##'KM'");
         DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy h:mm a");
@@ -66,8 +73,6 @@ public void onBindViewHolder(@NonNull currentRideAdapter.ViewHolder holder, int 
         holder.mWaiting.setText(watingFormat.format(dHistory.get(position).getWaitingtime()));
 
 
-
-
 }
 
 @Override
@@ -75,11 +80,14 @@ public int getItemCount() {
         return dHistory.size();
         }
 
-public class ViewHolder extends RecyclerView.ViewHolder{
+public class ViewHolder extends RecyclerView.ViewHolder {
 
     View mView;
     public TextView mName,mPickup,mDrop,mPhone, mstatus, mDiscription, mBoxes, mRideDistance,mWeight, mPaymentStatus,mPaidVia, mfare,mDatetime,mEstRideDistance,mWaiting;
     public Button mCancel;
+
+    public CardView mCardview;
+
 
     public ViewHolder(View itemView) {
         super(itemView);
@@ -98,8 +106,14 @@ public class ViewHolder extends RecyclerView.ViewHolder{
         mfare= mView.findViewById(R.id.cr_fare);
         mEstRideDistance=mView.findViewById(R.id.cr_estdistance);
         mWaiting=mView.findViewById(R.id.cr_waiting);
+        mCardview=mView.findViewById(R.id.cardView);
+
 
     }
+
+
+
+
 }
     }
 
