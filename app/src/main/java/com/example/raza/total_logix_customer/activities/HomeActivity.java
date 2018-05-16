@@ -21,6 +21,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -35,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -45,6 +48,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.raza.total_logix_customer.BuildConfig;
+import com.example.raza.total_logix_customer.DTO.dropLocationDTO;
 import com.example.raza.total_logix_customer.DTO.homeinfoPass;
 import com.example.raza.total_logix_customer.DTO.settings;
 import com.example.raza.total_logix_customer.R;
@@ -60,6 +64,7 @@ import com.example.raza.total_logix_customer.fragment.pendingRequestFragment;
 import com.example.raza.total_logix_customer.fragment.profileFragment;
 import com.example.raza.total_logix_customer.fragment.transactionhistoryFragment;
 import com.example.raza.total_logix_customer.fragment.walletFragment;
+import com.example.raza.total_logix_customer.recylerViewAdapter.dropLocationAdapter;
 import com.example.raza.total_logix_customer.support_classes.PermissionUtils;
 import com.example.raza.total_logix_customer.support_classes.dialogbox;
 import com.google.android.gms.common.api.ApiException;
@@ -111,7 +116,10 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import co.ceryle.radiorealbutton.RadioRealButton;
 import co.ceryle.radiorealbutton.RadioRealButtonGroup;
@@ -135,7 +143,13 @@ public class HomeActivity extends AppCompatActivity
     public FrameLayout mFooter;
     private LinearLayout mRideNow;
     private LinearLayout mBookNow;
+    private Button mAddDrop;
+    private RecyclerView mDropRecylerView;
     private GoogleApiClient mGoogleApiClient;
+    private List<dropLocationDTO> mDropLocation= new ArrayList<>();
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.Adapter mDropAdapter;
+
 
     protected GeoDataClient mGeoDataClient;
     private PlaceAutocompleteAdapter mAdapter;
@@ -231,7 +245,7 @@ public class HomeActivity extends AppCompatActivity
     private TextView mNameField, mFareEstimate;
     private ImageView  mMyLocation, mClear;
     private de.hdodenhof.circleimageview.CircleImageView mDisplayPic;
-
+    private static final String TAG = "MyActivity";
 
     public double lat, lng;
     public DrawerLayout drawer;
@@ -254,6 +268,8 @@ public class HomeActivity extends AppCompatActivity
     public String mDropString;
     private TextView mFareEstimateLabel;
     private ListenerRegistration settingslistner;
+    private dropLocationDTO dropLocationDTO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -268,6 +284,44 @@ public class HomeActivity extends AppCompatActivity
         mDropOffText = findViewById(R.id.drop_location);
         mMyLocation = findViewById(R.id.current_location);
         mClear = findViewById(R.id.clear);
+        mDropRecylerView=findViewById(R.id.drop_RecyclerView);
+        mAddDrop=findViewById(R.id.adddrop);
+
+
+        mDropRecylerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        mDropAdapter=new dropLocationAdapter(mDropLocation);
+
+        mDropRecylerView.setLayoutManager(mLayoutManager);
+        mDropRecylerView.setAdapter(mDropAdapter);
+
+
+        mAddDrop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(HomeActivity.this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+
+                if (mDropoffAddress!=null){
+                    for(int i = 0; i < mDropLocation.size();i++){
+
+
+                    }
+                    dropLocationDTO =new dropLocationDTO(mDropoffAddress,"1",distance,distanceInKM());
+                    mDropLocation.add(dropLocationDTO);
+                    mDropOffText.setText("");
+                    mFareEstimate.setText("");
+                    mDropoffAddress=null;
+                }
+
+                for(int i = 0; i < mDropLocation.size();i++){
+                     Log.d(TAG,"onCreate:"+mDropLocation.get(i));
+
+                 }
+                Collections.sort(mDropLocation,dropLocationDTO.BY_Distance);
+                mDropAdapter.notifyDataSetChanged();
+            }
+        });
+
 
         mFooter = findViewById(R.id.footerframe);
         mRideNow = findViewById(R.id.linear_request);
@@ -291,6 +345,8 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
+
+
 
 
         if (mCarType1.isChecked()) {
@@ -326,6 +382,8 @@ public class HomeActivity extends AppCompatActivity
                 }
             }
         });
+
+
 
         mRadioGroup.setOnClickedButtonListener(new RadioRealButtonGroup.OnClickedButtonListener() {
             @Override
@@ -463,6 +521,8 @@ public class HomeActivity extends AppCompatActivity
         mAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, BOUNDS_GREATER_SYDNEY, typeFilter);
         mPickupText.setAdapter(mAdapter);
         mDropOffText.setAdapter(mAdapter);
+
+
 
 
         //Auto Complete Google End
