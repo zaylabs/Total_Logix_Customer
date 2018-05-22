@@ -508,8 +508,42 @@
 android:layout_centerHorizontal="true"
             >
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Rating"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:id="@+id/YourRatingTv"
+                android:layout_centerHorizontal="true"
+                />
             <RatingBar
-                android:id="@+id/rideratingbar"
+                android:id="@+id/customerrideratingbar"
+                android:layout_below="@+id/YourRatingTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:layout_gravity="center"
+                android:clickable="false"
+                android:isIndicator="true"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Driver Rating"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:id="@+id/DriverRatingTv"
+                android:layout_centerHorizontal="true"
+      android:layout_below="@+id/customerrideratingbar"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/DriverRatingTv"
+                android:id="@+id/updateratinglinear"
+                >
+            <RatingBar
+                android:id="@+id/driverrideratingbar"
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -518,6 +552,7 @@ android:layout_centerHorizontal="true"
                 android:clickable="false"
                 android:isIndicator="true"
                 />
+            </LinearLayout>
         </RelativeLayout>
         </RelativeLayout>
 

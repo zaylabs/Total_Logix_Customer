@@ -9,13 +9,14 @@ public class settings {
     private int rikshabase;
     private int driverloadingRate;
     private int totallogixsharepercent;
+    private int dropstoprates;
     private int waitingrate;
     private Date dateupdated;
 
 
     public settings(){}
 
-    public settings(int suzukirate, int riksharate, int suzukibase, int rikshabase, int driverloadingRate, int totallogixsharepercent, int waitingrate, Date dateupdated){
+    public settings(int suzukirate, int riksharate, int suzukibase, int rikshabase, int driverloadingRate, int totallogixsharepercent, int dropstoprates, int waitingrate, Date dateupdated){
 
 
         this.suzukirate = suzukirate;
@@ -24,6 +25,7 @@ public class settings {
         this.rikshabase = rikshabase;
         this.driverloadingRate = driverloadingRate;
         this.totallogixsharepercent = totallogixsharepercent;
+        this.dropstoprates = dropstoprates;
         this.waitingrate = waitingrate;
         this.dateupdated = dateupdated;
     }
@@ -90,6 +92,14 @@ public class settings {
 
     public void setDateupdated(Date dateupdated) {
         this.dateupdated = dateupdated;
+    }
+
+    public int getDropstoprates() {
+        return dropstoprates;
+    }
+
+    public void setDropstoprates(int dropstoprates) {
+        this.dropstoprates = dropstoprates;
     }
 }
 

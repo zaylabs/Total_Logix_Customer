@@ -1,5 +1,7 @@
 package com.example.raza.total_logix_customer.DTO;
 
+import android.net.Uri;
+
 import com.google.firebase.firestore.GeoPoint;
 
 import java.util.Date;
@@ -37,15 +39,17 @@ public class customerHistory {
     private float waitingtime;
     private String uniqueID;
     private String settlement;
-    private float ridestars;
+    private float driverridestars;
+    private float customerridestars;
     private float estDistance;
     private String gatepass;
     private Date arriveddate;
+    private String droplocationUniqueID;
     customerHistory(){
 
     }
 
-    public customerHistory(String name, GeoPoint originalpickup, GeoPoint originaldrop, GeoPoint actualpickup, GeoPoint actualdrop, String phone, Date date, String CID, String VT, String weight, String boxes , String description, String driverloading, float ridedistance, String pickupaddress, String dropaddress, String estFare, String drivername, String driverdp, String drivernic, String driverphone, GeoPoint driverlocation, String carregno, String driverid, String status, float ridefare, String paidvia, String paymentstatus, float waitingtime, String uniqueID, String settlement, float ridestars, float estDistance, String gatepass, Date arriveddate){
+    public customerHistory(String name, GeoPoint originalpickup, GeoPoint originaldrop, GeoPoint actualpickup, GeoPoint actualdrop, String phone, Date date, String CID, String VT, String weight, String boxes , String description, String driverloading, float ridedistance, String pickupaddress, String dropaddress, String estFare, String drivername, String driverdp, String drivernic, String driverphone, GeoPoint driverlocation, String carregno, String driverid, String status, float ridefare, String paidvia, String paymentstatus, float waitingtime, String uniqueID, String settlement, float driverridestars,float customerridestars, float estDistance, String gatepass, Date arriveddate,String droplocationUniqueID){
 
         this.name = name;
         this.originalpickup = originalpickup;
@@ -78,10 +82,13 @@ public class customerHistory {
         this.uniqueID=uniqueID;
         this.waitingtime=waitingtime;
         this.settlement=settlement;
-        this.ridestars=ridestars;
+        this.driverridestars = driverridestars;
+        this.customerridestars = customerridestars;
+
         this.estDistance=estDistance;
         this.gatepass=gatepass;
         this.arriveddate = arriveddate;
+        this.droplocationUniqueID = droplocationUniqueID;
     }
 
     public String getName() {
@@ -333,12 +340,20 @@ public class customerHistory {
         this.settlement = settlement;
     }
 
-    public float getRidestars() {
-        return ridestars;
+    public float getDriverridestars() {
+        return driverridestars;
     }
 
-    public void setRidestars(float ridestars) {
-        this.ridestars = ridestars;
+    public void setDriverridestars(float driverridestars) {
+        this.driverridestars = driverridestars;
+    }
+
+    public float getCustomerridestars() {
+        return customerridestars;
+    }
+
+    public void setCustomerridestars(float customerridestars) {
+        this.customerridestars = customerridestars;
     }
 
     public float getEstDistance() {
@@ -363,6 +378,14 @@ public class customerHistory {
 
     public void setArriveddate(Date arriveddate) {
         this.arriveddate = arriveddate;
+    }
+
+    public String getDroplocationUniqueID() {
+        return droplocationUniqueID;
+    }
+
+    public void setDroplocationUniqueID(String droplocationUniqueID) {
+        this.droplocationUniqueID = droplocationUniqueID;
     }
 }
 

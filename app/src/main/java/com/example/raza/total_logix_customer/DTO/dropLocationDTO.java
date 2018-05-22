@@ -2,28 +2,34 @@ package com.example.raza.total_logix_customer.DTO;
 
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Comparator;
 
 public class dropLocationDTO {
 
     private String address;
-    private String addressorder;
-    private float distance;
+    private String cid;
+    private String uniqueid;
+    private Float distance;
     private String stringdistance;
-
+    private LatLng droplocation;
     public dropLocationDTO(){
 
     }
-    public dropLocationDTO(String address,String addressorder, float distance, String stringdistance){
+    public dropLocationDTO(String address,String cid,String uniqueid, Float distance, String stringdistance,LatLng droplocation){
 
 
         this.address = address;
-        this.addressorder = addressorder;
+        this.cid = cid;
+        this.uniqueid = uniqueid;
+
         this.distance = distance;
         this.stringdistance = stringdistance;
+        this.droplocation = droplocation;
     }
 
-   public  Comparator<dropLocationDTO>BY_Distance = new Comparator<dropLocationDTO>() {
+   public static final   Comparator<dropLocationDTO>BY_Distance = new Comparator<dropLocationDTO>() {
        @Override
        public int compare(dropLocationDTO o1, dropLocationDTO o2) {
 
@@ -48,19 +54,27 @@ public class dropLocationDTO {
         this.address = address;
     }
 
-    public String getAddressorder() {
-        return addressorder;
+    public String getCid() {
+        return cid;
     }
 
-    public void setAddressorder(String addressorder) {
-        this.addressorder = addressorder;
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 
-    public float getDistance() {
+    public String getUniqueid() {
+        return uniqueid;
+    }
+
+    public void setUniqueid(String uniqueid) {
+        this.uniqueid = uniqueid;
+    }
+
+    public Float getDistance() {
         return distance;
     }
 
-    public void setDistance(float distance) {
+    public void setDistance(Float distance) {
         this.distance = distance;
     }
 
@@ -70,5 +84,13 @@ public class dropLocationDTO {
 
     public void setStringdistance(String stringdistance) {
         this.stringdistance = stringdistance;
+    }
+
+    public LatLng getDroplocation() {
+        return droplocation;
+    }
+
+    public void setDroplocation(LatLng droplocation) {
+        this.droplocation = droplocation;
     }
 }

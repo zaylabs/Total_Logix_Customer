@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.raza.total_logix_customer.DTO.customerHistory;
 import com.example.raza.total_logix_customer.DTO.customerRequest;
+import com.example.raza.total_logix_customer.DTO.dropLocationDTO;
 import com.example.raza.total_logix_customer.DTO.userProfile;
 import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.activities.HomeActivity;
@@ -31,9 +33,14 @@ import com.google.firebase.firestore.GeoPoint;
 import com.travijuu.numberpicker.library.Enums.ActionEnum;
 import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import static android.support.constraint.Constraints.TAG;
 import static android.view.View.GONE;
 
 
@@ -77,8 +84,8 @@ public class customerRequestFragment extends android.app.Fragment {
     private String gatepass;
     private FrameLayout mHeader;
     private FrameLayout mFooter;
-
-
+    private List mDropList;
+    private String mdroplocationUniqueID;
 
     public customerRequestFragment() {
         // Required empty public constructor
@@ -104,13 +111,13 @@ public class customerRequestFragment extends android.app.Fragment {
         mHeader=((HomeActivity)getActivity()).mHeader;
         mFooter=((HomeActivity)getActivity()).mFooter;
         pickupLatLng=((HomeActivity)getActivity()).mPickUpLatLng;
-        dropLatLng= ((HomeActivity)getActivity()).mDropLatLng;
+        dropLatLng= ((HomeActivity)getActivity()).LastDropPointLatLng;
         pickup = new GeoPoint(pickupLatLng.latitude,pickupLatLng.longitude);
         drop=new GeoPoint(dropLatLng.latitude,dropLatLng.longitude);
+        mDropList=((HomeActivity)getActivity()).mDropLocation;
+        mdroplocationUniqueID=((HomeActivity)getActivity()).droplocationUniqueID;
 
-
-
-        ridedistance=((HomeActivity) getActivity()).distance;
+        ridedistance=((HomeActivity) getActivity()).LastDropPointDistance;
 
 
         boxes_val=mNoBoxes.getValue();
@@ -127,7 +134,7 @@ public class customerRequestFragment extends android.app.Fragment {
         ridestar = 0;
 
         pickupaddress= ((HomeActivity)getActivity()).mPickupAddress;
-        dropaddress=((HomeActivity)getActivity()).mDropoffAddress;
+        dropaddress=((HomeActivity)getActivity()).LastDropPoint;
 
 
         mNoBoxes.setValueChangedListener(new ValueChangedListener() {
@@ -153,33 +160,36 @@ public class customerRequestFragment extends android.app.Fragment {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gatepass="";
+                gatepass = "";
 
-                weight= String.valueOf(mNoBoxes.getValue())+"KG";
-                boxes= String.valueOf(mWeight_picker.getValue());
+                weight = String.valueOf(mNoBoxes.getValue()) + "KG";
+                boxes = String.valueOf(mWeight_picker.getValue());
 
-                if (weight!=null && boxes != null) {
-                    if (description!=null) {
+                if (weight != null && boxes != null) {
+                    if (description != null) {
 
 
                         user = FirebaseAuth.getInstance().getCurrentUser();
 
 
-
-
-                        customerRequest customerRequest = new customerRequest(name, pickup, drop, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, uniqueID,stars,gatepass,date);
-                        customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", 0, null, null, 0, uniqueID,null,ridestar,ridedistance,gatepass,date);
+                        customerRequest customerRequest = new customerRequest(name, pickup, drop, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, uniqueID, stars, gatepass, date, mdroplocationUniqueID);
+                        customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", 0, null, null, 0, uniqueID, null, ridestar, ridestar, ridedistance, gatepass, date, mdroplocationUniqueID);
 
                         db.collection("customerRequest").document(uniqueID).set(customerRequest);
+                        for (int i = 0; i < mDropList.size(); i++) {
+
+                            db.collection("customerRequestdroplocations").add(mDropList.get(i));
+                        }
+
+
                         db.collection("CustomerHistory").document(uniqueID).set(customerHistory);
                         currentRide();
-                    }else {
+                    } else {
                         Toast.makeText(getContext(), "Kindly Select Cargo Type", Toast.LENGTH_LONG).show();
                     }
-                }else {
+                } else {
                     Toast.makeText(getContext(), "Kindly Select weight & No.of Boxes", Toast.LENGTH_LONG).show();
                 }
-
 
             }
         });

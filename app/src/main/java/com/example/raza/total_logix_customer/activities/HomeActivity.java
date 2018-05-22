@@ -55,7 +55,9 @@ import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.adapters.HttpDataHandler;
 import com.example.raza.total_logix_customer.adapters.PlaceAutocompleteAdapter;
 
+import com.example.raza.total_logix_customer.fragment.BlankFragment;
 import com.example.raza.total_logix_customer.fragment.acceptRequestFragment;
+import com.example.raza.total_logix_customer.fragment.currentrideitemFragment;
 import com.example.raza.total_logix_customer.fragment.customerRequestFragment;
 import com.example.raza.total_logix_customer.fragment.helpFragment;
 import com.example.raza.total_logix_customer.fragment.historyFragment;
@@ -117,6 +119,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -146,10 +149,13 @@ public class HomeActivity extends AppCompatActivity
     private Button mAddDrop;
     private RecyclerView mDropRecylerView;
     private GoogleApiClient mGoogleApiClient;
-    private List<dropLocationDTO> mDropLocation= new ArrayList<>();
+    public List<dropLocationDTO> mDropLocation= new ArrayList<>();
     private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerView.Adapter mDropAdapter;
-
+    public RecyclerView.Adapter mDropAdapter;
+    public String LastDropPoint;
+    public LatLng LastDropPointLatLng;
+    public Float LastDropPointDistance;
+    private int DropLocationSize;
 
     protected GeoDataClient mGeoDataClient;
     private PlaceAutocompleteAdapter mAdapter;
@@ -247,6 +253,8 @@ public class HomeActivity extends AppCompatActivity
     private de.hdodenhof.circleimageview.CircleImageView mDisplayPic;
     private static final String TAG = "MyActivity";
 
+    private Date date;
+    public String droplocationUniqueID;
     public double lat, lng;
     public DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
@@ -263,6 +271,7 @@ public class HomeActivity extends AppCompatActivity
     private int SuzukiBase;
     private int RikshaBase;
     private int DriverLoadingRate;
+    private int DropStopRates;
     public String FareEstimate;
     public String mPickupString;
     public String mDropString;
@@ -294,6 +303,7 @@ public class HomeActivity extends AppCompatActivity
 
         mDropRecylerView.setLayoutManager(mLayoutManager);
         mDropRecylerView.setAdapter(mDropAdapter);
+/*
 
 
         mAddDrop.setOnClickListener(new View.OnClickListener() {
@@ -306,8 +316,10 @@ public class HomeActivity extends AppCompatActivity
 
 
                     }
-                    dropLocationDTO =new dropLocationDTO(mDropoffAddress,"1",distance,distanceInKM());
+                    dropLocationDTO =new dropLocationDTO(mDropoffAddress,userID,distance,distanceInKM());
                     mDropLocation.add(dropLocationDTO);
+
+
                     mDropOffText.setText("");
                     mFareEstimate.setText("");
                     mDropoffAddress=null;
@@ -318,9 +330,17 @@ public class HomeActivity extends AppCompatActivity
 
                  }
                 Collections.sort(mDropLocation,dropLocationDTO.BY_Distance);
+                if (mDropLocation!=null&&!mDropLocation.isEmpty()){
+
+                        item = (mDropLocation.get(mDropLocation.size()-1)).getAddress();
+
+                }
+                Toast.makeText(HomeActivity.this, item, Toast.LENGTH_SHORT).show();
+                Log.d(TAG,item);
                 mDropAdapter.notifyDataSetChanged();
             }
         });
+*/
 
 
         mFooter = findViewById(R.id.footerframe);
@@ -341,6 +361,7 @@ public class HomeActivity extends AppCompatActivity
                 RikshaRate = settings.getRiksharate();
                 SuzukiBase = settings.getSuzukibase();
                 RikshaBase = settings.getRikshabase();
+                DropStopRates=settings.getDropstoprates();
                 DriverLoadingRate = settings.getDriverloadingRate();
 
             }
@@ -562,7 +583,7 @@ public class HomeActivity extends AppCompatActivity
         mRideNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    if (mPickUpLatLng != null && mDropLatLng != null) {
+                    if (mPickUpLatLng != null && LastDropPointLatLng != null) {
                         if (vt != null) {
                             if (!(mDriverLoading_et.isChecked())) {
                                 mDriverLoading = "Not Needed";
@@ -609,21 +630,26 @@ public class HomeActivity extends AppCompatActivity
         Double result = 0.0;
         Double b=0.0;
         Double c=3.0;
-        Double a = Double.parseDouble(distance.toString());
+        int d=0;
+        if (DropLocationSize>1){
+            d=(DropLocationSize-1)*DropStopRates;
+        }
+
+        Double a = Double.parseDouble(LastDropPointDistance.toString());
         if (!(mCarType2.isChecked())) {
             if (a<c){
                 b= Double.valueOf(SuzukiBase);
                 if ((mDriverLoading_et.isChecked())) {
-                    result = b + DriverLoadingRate;
+                    result = b + DriverLoadingRate+d;
                 } else {
-                    result = b;
+                    result = b+d;
                 }
             }else {
                 b = (a * SuzukiRate);
                 if ((mDriverLoading_et.isChecked())) {
-                    result = b + DriverLoadingRate;
+                    result = b + DriverLoadingRate+d;
                 } else {
-                    result = b;
+                    result = b+d;
                 }
             }
 
@@ -631,16 +657,16 @@ public class HomeActivity extends AppCompatActivity
             if (a<c) {
                 b = Double.valueOf(RikshaBase);
                 if ((mDriverLoading_et.isChecked())) {
-                    result = b + DriverLoadingRate;
+                    result = b + DriverLoadingRate+d;
                 } else {
-                    result = b;
+                    result = b+d;
                 }
             }else{
                 b=(a * RikshaRate);
                 if ((mDriverLoading_et.isChecked())) {
-                    result = b + DriverLoadingRate;
+                    result = b + DriverLoadingRate+d;
                 } else {
-                    result = b;
+                    result = b+d;
                 }
                 }
         }
@@ -690,14 +716,19 @@ public class HomeActivity extends AppCompatActivity
         FragmentManager fm = getFragmentManager();
         int id = item.getItemId();
 
+
+
         if (sMapFragment.isAdded())
             sFm.beginTransaction().hide(sMapFragment).commit();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
+
         switch (item.getItemId()) {
             case R.id.home:
                 mAuth.addAuthStateListener(firebaseAuthListener);
                 mHeader.setVisibility(View.VISIBLE);
                 mFooter.setVisibility(View.VISIBLE);
+                mDropLocation.clear();
+                mDropAdapter.notifyDataSetChanged();
                 if (!sMapFragment.isAdded()) {
                     sFm.beginTransaction().add(R.id.map, sMapFragment).commit();
                 }else{
@@ -731,8 +762,9 @@ public class HomeActivity extends AppCompatActivity
                 mFooter.setVisibility(GONE);
 
 
-                    ft.replace(R.id.cm, new acceptRequestFragment());
+                    ft.replace(R.id.cm, new BlankFragment());
                     ft.commit();
+
 
                 break;
 
@@ -1069,9 +1101,32 @@ public class HomeActivity extends AppCompatActivity
                         .title(drop.getName().toString()).draggable(true));
                 mdistancekm=distanceInKM();
 
+                Toast.makeText(HomeActivity.this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+                date =  Calendar.getInstance().getTime();
+                droplocationUniqueID=userID+date;
+                if (mDropoffAddress!=null) {
+                    dropLocationDTO = new dropLocationDTO(mDropoffAddress, userID, droplocationUniqueID,distance, distanceInKM(),mDropLatLng);
+                    mDropLocation.add(dropLocationDTO);
+                    mDropOffText.setText("");
 
-                Toast.makeText(HomeActivity.this, "Distance in KM " + mdistancekm + mPickupString, Toast.LENGTH_SHORT).show();
-                fareCarCalculator();
+                    mDropoffAddress = null;
+                }
+
+                Collections.sort(mDropLocation,dropLocationDTO.BY_Distance);
+                if (mDropLocation!=null&&!mDropLocation.isEmpty()){
+                    LastDropPoint = (mDropLocation.get(mDropLocation.size()-1)).getAddress();
+                    LastDropPointLatLng=(mDropLocation.get(mDropLocation.size()-1)).getDroplocation();
+                    LastDropPointDistance=(mDropLocation.get(mDropLocation.size()-1)).getDistance();
+                    DropLocationSize= mDropLocation.size();
+                    mDropAdapter.notifyDataSetChanged();
+                    Log.d(TAG,"onCreate:"+DropLocationSize+"-"+LastDropPointLatLng+"-"+LastDropPointDistance);
+                    Toast.makeText(HomeActivity.this,DropLocationSize +LastDropPointDistance+ LastDropPointLatLng.toString(), Toast.LENGTH_LONG).show();
+                    fareCarCalculator();
+
+                }
+
+
+
                 // Display the third party attributions if set.
                 final CharSequence thirdPartyAttribution = places.getAttributions();
                 if (thirdPartyAttribution == null) {

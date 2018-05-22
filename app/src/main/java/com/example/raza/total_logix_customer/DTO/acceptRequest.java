@@ -1,10 +1,18 @@
 package com.example.raza.total_logix_customer.DTO;
 
+import android.net.Uri;
+import android.os.Parcelable;
+
 import com.google.firebase.firestore.GeoPoint;
+
+
+import org.parceler.Parcel;
 
 import java.util.Date;
 
-public class acceptRequest {
+
+
+public class acceptRequest implements Parcelable {
 
     private String name;
     private String phone;
@@ -42,12 +50,13 @@ public class acceptRequest {
     private float estDistance;
     private String gatepass;
     private Date arriveddate;
+    private String droplocationUniqueID;
 
     acceptRequest(){
 
     }
 
-    public acceptRequest(String name, GeoPoint originalpickup, GeoPoint originaldrop, GeoPoint actualpickup, GeoPoint actualdrop, String phone, Date date, String CID, String VT, String weight, String boxes , String description, String driverloading, float ridedistance, String pickupaddress, String dropaddress, String estFare, String drivername, String driverdp, String drivernic, String driverphone, GeoPoint driverlocation, String carregno, String driverid, String status, float ridefare, String paidvia, String paymentstatus, Date statusdate, float waitingtime, String uniqueID, String settlement  , float ridestars, float estDistance,String gatepass,Date arriveddate ){
+    public acceptRequest(String name, GeoPoint originalpickup, GeoPoint originaldrop, GeoPoint actualpickup, GeoPoint actualdrop, String phone, Date date, String CID, String VT, String weight, String boxes , String description, String driverloading, float ridedistance, String pickupaddress, String dropaddress, String estFare, String drivername, String driverdp, String drivernic, String driverphone, GeoPoint driverlocation, String carregno, String driverid, String status, float ridefare, String paidvia, String paymentstatus, Date statusdate, float waitingtime, String uniqueID, String settlement  , float ridestars, float estDistance,String gatepass,Date arriveddate,String droplocationUniqueID ){
 
         this.name = name;
         this.originalpickup = originalpickup;
@@ -86,7 +95,91 @@ public class acceptRequest {
         this.estDistance=estDistance;
         this.gatepass=gatepass;
         this.arriveddate = arriveddate;
+        this.droplocationUniqueID = droplocationUniqueID;
     }
+
+
+    protected acceptRequest(android.os.Parcel in) {
+        name = in.readString();
+        phone = in.readString();
+        CID = in.readString();
+        VT = in.readString();
+        weight = in.readString();
+        boxes = in.readString();
+        description = in.readString();
+        driverloading = in.readString();
+        ridedistance = in.readFloat();
+        pickupaddress = in.readString();
+        dropaddress = in.readString();
+        estFare = in.readString();
+        drivername = in.readString();
+        driverdp = in.readString();
+        drivernic = in.readString();
+        driverphone = in.readString();
+        carregno = in.readString();
+        driverid = in.readString();
+        status = in.readString();
+        ridefare = in.readFloat();
+        paidvia = in.readString();
+        paymentstatus = in.readString();
+        waitingtime = in.readFloat();
+        uniqueID = in.readString();
+        settlement = in.readString();
+        ridestars = in.readFloat();
+        estDistance = in.readFloat();
+        gatepass = in.readString();
+        droplocationUniqueID = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(android.os.Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(phone);
+        dest.writeString(CID);
+        dest.writeString(VT);
+        dest.writeString(weight);
+        dest.writeString(boxes);
+        dest.writeString(description);
+        dest.writeString(driverloading);
+        dest.writeFloat(ridedistance);
+        dest.writeString(pickupaddress);
+        dest.writeString(dropaddress);
+        dest.writeString(estFare);
+        dest.writeString(drivername);
+        dest.writeString(driverdp);
+        dest.writeString(drivernic);
+        dest.writeString(driverphone);
+        dest.writeString(carregno);
+        dest.writeString(driverid);
+        dest.writeString(status);
+        dest.writeFloat(ridefare);
+        dest.writeString(paidvia);
+        dest.writeString(paymentstatus);
+        dest.writeFloat(waitingtime);
+        dest.writeString(uniqueID);
+        dest.writeString(settlement);
+        dest.writeFloat(ridestars);
+        dest.writeFloat(estDistance);
+        dest.writeString(gatepass);
+        dest.writeString(droplocationUniqueID);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<acceptRequest> CREATOR = new Creator<acceptRequest>() {
+        @Override
+        public acceptRequest createFromParcel(android.os.Parcel in) {
+            return new acceptRequest(in);
+        }
+
+        @Override
+        public acceptRequest[] newArray(int size) {
+            return new acceptRequest[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -377,6 +470,14 @@ public class acceptRequest {
 
     public void setArriveddate(Date arriveddate) {
         this.arriveddate = arriveddate;
+    }
+
+    public String getDroplocationUniqueID() {
+        return droplocationUniqueID;
+    }
+
+    public void setDroplocationUniqueID(String droplocationUniqueID) {
+        this.droplocationUniqueID = droplocationUniqueID;
     }
 }
 

@@ -166,6 +166,7 @@
     <string name="Sample_source">Credit Card</string>
     <string name="Menu_current_logix">Current Logix</string>
     <string name="Munu_pending_request">Pending Request</string>
+    <string name="track_logix">Track Logix</string>
 
 
 </resources>

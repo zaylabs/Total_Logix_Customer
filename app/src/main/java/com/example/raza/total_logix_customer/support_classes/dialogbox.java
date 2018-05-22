@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.raza.total_logix_customer.DTO.customerHistory;
 import com.example.raza.total_logix_customer.DTO.customerRequest;
+import com.example.raza.total_logix_customer.DTO.dropLocationDTO;
 import com.example.raza.total_logix_customer.DTO.userProfile;
 import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.activities.CurrentRideActivity;
@@ -41,8 +42,10 @@ import com.google.firebase.firestore.GeoPoint;
 import com.travijuu.numberpicker.library.Enums.ActionEnum;
 import com.travijuu.numberpicker.library.Interface.ValueChangedListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static android.view.View.GONE;
 
@@ -88,7 +91,8 @@ public class dialogbox extends AppCompatDialogFragment {
     private String gatepass;
     private FrameLayout mHeader;
     private FrameLayout mFooter;
-
+    private List mDropList;
+    private String mdroplocationUniqueID;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -114,8 +118,9 @@ public class dialogbox extends AppCompatDialogFragment {
         dropLatLng= ((HomeActivity)getActivity()).mDropLatLng;
         pickup = new GeoPoint(pickupLatLng.latitude,pickupLatLng.longitude);
         drop=new GeoPoint(dropLatLng.latitude,dropLatLng.longitude);
-
+        mDropList=((HomeActivity)getActivity()).mDropLocation;
         ridedistance=((HomeActivity) getActivity()).distance;
+        mdroplocationUniqueID=((HomeActivity) getActivity()).droplocationUniqueID;
 
 
         boxes_val=mNoBoxes.getValue();
@@ -186,8 +191,8 @@ public class dialogbox extends AppCompatDialogFragment {
 
 
 
-                            customerRequest customerRequest = new customerRequest(name, pickup, drop, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, uniqueID,stars,gatepass,date);
-                            customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", 0, null, null, 0, uniqueID,null,ridestar,ridedistance,gatepass,date);
+                            customerRequest customerRequest = new customerRequest(name, pickup, drop, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, uniqueID,stars,gatepass,date,mdroplocationUniqueID);
+                            customerHistory customerHistory = new customerHistory(name, pickup, drop, null, null, phone, date, CID, VT, weight, boxes, description, driverloading, ridedistance, pickupaddress, dropaddress, estFare, null, null, null, null, null, null, null, "Pending", 0, null, null, 0, uniqueID,null,ridestar,ridestar,ridedistance,gatepass,date,mdroplocationUniqueID);
 
                             db.collection("customerRequest").document(uniqueID).set(customerRequest);
                             db.collection("CustomerHistory").document(uniqueID).set(customerHistory);

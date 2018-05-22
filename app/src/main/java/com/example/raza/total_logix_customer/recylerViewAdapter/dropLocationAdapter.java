@@ -22,9 +22,9 @@ public class dropLocationAdapter extends RecyclerView.Adapter<dropLocationAdapte
 
     public dropLocationAdapter(List<dropLocationDTO> mDropLocation) {
 
-
         this.mDropLocation = mDropLocation;
     }
+
 
     @NonNull
     @Override

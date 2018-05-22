@@ -136,6 +136,8 @@ public class customerRequestAdapter extends RecyclerView.Adapter<customerRequest
         });
 
 
+
+
     }
 
     @Override
@@ -167,6 +169,8 @@ public class customerRequestAdapter extends RecyclerView.Adapter<customerRequest
             mBoxes = (TextView) mView.findViewById(R.id.Boxes);
             mWeight = (TextView) mView.findViewById(R.id.weight);
             mRatingBar = (RatingBar) mView.findViewById(R.id.c_rating);
+
+
 
         }
     }

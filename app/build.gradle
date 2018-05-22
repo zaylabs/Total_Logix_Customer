@@ -73,5 +73,9 @@ dependencies {
     //LocationUpdateTry
     implementation 'io.nlopez.smartlocation:library:3.3.3'
 
+    //Parcelable
+    implementation 'org.parceler:parceler-api:1.1.6'
+    annotationProcessor 'org.parceler:parceler:1.1.6'
+
 }
 apply plugin: 'com.google.gms.google-services'
