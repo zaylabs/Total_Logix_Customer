@@ -88,8 +88,9 @@ public class currentrideitemFragment extends Fragment implements OnMapReadyCallb
         mPhoneNumber.setText(acceptRequest.getPhone());
         mPickupLocation.setText(acceptRequest.getPickupaddress());
         mDropLoaction.setText(acceptRequest.getDropaddress());
-        Picasso.with(getContext()).load(Uri.parse(acceptRequest.getDriverdp())).resize(150,150).centerCrop().into(mdriverdp);
-
+        if (acceptRequest.getDriverdp()!=null) {
+            Picasso.with(getContext()).load(Uri.parse(acceptRequest.getDriverdp())).resize(150, 150).centerCrop().into(mdriverdp);
+        }
 
 
         return mView;
@@ -140,4 +141,11 @@ public class currentrideitemFragment extends Fragment implements OnMapReadyCallb
 
 
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+        driveravailablelistner.remove();
+// add your code here which executes Fragment going to be stopped.
+    }
+
 }

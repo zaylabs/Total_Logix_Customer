@@ -178,11 +178,17 @@ public class customerRequestFragment extends android.app.Fragment {
                         db.collection("customerRequest").document(uniqueID).set(customerRequest);
                         for (int i = 0; i < mDropList.size(); i++) {
 
-                            db.collection("customerRequestdroplocations").add(mDropList.get(i));
+                            db.collection("customerRequest").document(uniqueID).collection("customerRequestdroplocations").add(mDropList.get(i));
+
                         }
 
 
                         db.collection("CustomerHistory").document(uniqueID).set(customerHistory);
+                        for (int i = 0; i < mDropList.size(); i++) {
+
+                            db.collection("CustomerHistory").document(uniqueID).collection("customerRequestdroplocations").add(mDropList.get(i));
+
+                        }
                         currentRide();
                     } else {
                         Toast.makeText(getContext(), "Kindly Select Cargo Type", Toast.LENGTH_LONG).show();
@@ -218,7 +224,7 @@ public class customerRequestFragment extends android.app.Fragment {
         mFooter.setVisibility(GONE);
 
 
-        ft.replace(R.id.cm, new acceptRequestFragment());
+        ft.replace(R.id.cm, new pendingRequestFragment());
         ft.commit();
 
 

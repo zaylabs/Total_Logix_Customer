@@ -74,7 +74,7 @@ public class pendingRequestFragment extends android.app.Fragment {
         //mProgressbar=(ProgressBar)view.findViewById(R.id.progressBar_customer);
         dHistory = new ArrayList<>();
         currentRideAdapter = new customerRequestAdapter(getContext(),dHistory);
-        mDhistory = (RecyclerView)view.findViewById(R.id.requestRideRV);
+        mDhistory = (RecyclerView)view.findViewById(R.id.pendingRideRV);
         mDhistory.setHasFixedSize(true);
         mDhistory.setLayoutManager(new LinearLayoutManager(getContext()));
         mDhistory.setAdapter(currentRideAdapter);
@@ -89,16 +89,16 @@ public class pendingRequestFragment extends android.app.Fragment {
                 for (DocumentChange doc : queryDocumentSnapshots.getDocumentChanges()) {
                     switch (doc.getType()) {
                         case ADDED:
-                            dHistory.remove(acceptRequest);
+                            /*dHistory.remove(acceptRequest);
                             currentRideAdapter.notifyDataSetChanged();
+                            */
                             acceptRequest = doc.getDocument().toObject(customerRequest.class);
                             dHistory.add(acceptRequest);
                             currentRideAdapter.notifyDataSetChanged();
-                            //                  mProgressLayout.setVisibility(View.GONE);
                             break;
                         case MODIFIED:
-                            dHistory.remove(acceptRequest);
-                            currentRideAdapter.notifyDataSetChanged();
+                            /*dHistory.remove(acceptRequest);
+                            currentRideAdapter.notifyDataSetChanged();*/
                             acceptRequest = doc.getDocument().toObject(customerRequest.class);
                             dHistory.add(acceptRequest);
                             currentRideAdapter.notifyDataSetChanged();

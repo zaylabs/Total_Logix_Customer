@@ -13,21 +13,33 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.raza.total_logix_customer.DTO.customerRequest;
+import com.example.raza.total_logix_customer.DTO.dropLocationDTO;
 import com.example.raza.total_logix_customer.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+
+import javax.annotation.Nullable;
 
 public class customerRequestAdapter extends RecyclerView.Adapter<customerRequestAdapter.ViewHolder> {
 
@@ -57,7 +69,7 @@ public class customerRequestAdapter extends RecyclerView.Adapter<customerRequest
     private GeoPoint mCurrentLocation;
     private String mydate, mytime, gatepass;
     private ListenerRegistration driveravailablegetreqliststner;
-
+    private ArrayList removelocation;
     public customerRequestAdapter(Context context, List<customerRequest> cRequests) {
         this.cRequests = cRequests;
         this.context = context;
@@ -112,9 +124,41 @@ public class customerRequestAdapter extends RecyclerView.Adapter<customerRequest
         holder.mRatingBar.setRating(cRequests.get(position).getStars());
         uniqueID = cRequests.get(position).getUniqueID();
 
+
         holder.mCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                db.collection("customerRequest").document(uniqueID).collection("customerRequestdroplocations").whereEqualTo("cid", userID).get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                        String DropLocationID= document.getId();
+                                        db.collection("customerRequest").document(uniqueID).collection("customerRequestdroplocations").document(DropLocationID).delete()
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+
+                                                    }
+
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error deleting document", e);
+                                                    }
+                                                });
+
+                                    }
+                                } else {
+                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
                 db.collection("customerRequest").document(uniqueID).delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

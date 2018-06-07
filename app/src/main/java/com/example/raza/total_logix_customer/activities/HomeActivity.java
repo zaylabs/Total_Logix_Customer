@@ -123,6 +123,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import co.ceryle.radiorealbutton.RadioRealButton;
 import co.ceryle.radiorealbutton.RadioRealButtonGroup;
@@ -294,7 +295,7 @@ public class HomeActivity extends AppCompatActivity
         mMyLocation = findViewById(R.id.current_location);
         mClear = findViewById(R.id.clear);
         mDropRecylerView=findViewById(R.id.drop_RecyclerView);
-        mAddDrop=findViewById(R.id.adddrop);
+
 
 
         mDropRecylerView.setHasFixedSize(true);
@@ -693,7 +694,7 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -707,7 +708,7 @@ public class HomeActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -741,7 +742,7 @@ public class HomeActivity extends AppCompatActivity
                 mHeader.setVisibility(GONE);
                 mFooter.setVisibility(GONE);
 
-
+                getSupportActionBar().setTitle("Completed Logix");
                 ft.replace(R.id.cm, new historyFragment());
                 ft.commit();
 
@@ -751,7 +752,7 @@ public class HomeActivity extends AppCompatActivity
                 mHeader.setVisibility(GONE);
                 mFooter.setVisibility(GONE);
 
-
+                getSupportActionBar().setTitle("Pending Logix");
                 ft.replace(R.id.cm, new pendingRequestFragment());
                 ft.commit();
 
@@ -761,7 +762,7 @@ public class HomeActivity extends AppCompatActivity
                 mHeader.setVisibility(GONE);
                 mFooter.setVisibility(GONE);
 
-
+                getSupportActionBar().setTitle("Current Logix");
                     ft.replace(R.id.cm, new BlankFragment());
                     ft.commit();
 
@@ -773,7 +774,7 @@ public class HomeActivity extends AppCompatActivity
                 mHeader.setVisibility(GONE);
                 mFooter.setVisibility(GONE);
 
-
+                getSupportActionBar().setTitle("Transaction History");
                 ft.replace(R.id.cm, new transactionhistoryFragment());
                 ft.commit();
 
@@ -782,14 +783,14 @@ public class HomeActivity extends AppCompatActivity
                 mHeader.setVisibility(GONE);
                 mFooter.setVisibility(GONE);
 
-
+                getSupportActionBar().setTitle("Walled");
                 ft.replace(R.id.cm, new walletFragment());
                 ft.commit();
                 break;
             case R.id.profile:
                 mHeader.setVisibility(GONE);
                 mFooter.setVisibility(GONE);
-
+                getSupportActionBar().setTitle("Profile");
 
                 ft.replace(R.id.cm, new profileFragment());
                 ft.commit();
@@ -798,7 +799,7 @@ public class HomeActivity extends AppCompatActivity
                 mHeader.setVisibility(GONE);
                 mFooter.setVisibility(GONE);
 
-
+                getSupportActionBar().setTitle("Help");
                 ft.replace(R.id.cm, new hovermapFragment() );
                 ft.commit();
 
@@ -1093,7 +1094,7 @@ public class HomeActivity extends AppCompatActivity
                         drop.getWebsiteUri()));
                 mDropLatLng = drop.getLatLng();
                 mDropName= drop.getName().toString();
-                mDropoffAddress=drop.getAddress().toString();
+                mDropoffAddress=drop.getName()+", "+drop.getAddress().toString();
                 if(mDropMarker != null){
                     mDropMarker.remove();
                 }

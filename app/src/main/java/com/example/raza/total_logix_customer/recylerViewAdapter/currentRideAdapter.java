@@ -102,9 +102,9 @@ public void onBindViewHolder(@NonNull final currentRideAdapter.ViewHolder holder
         String stringwaiting=watingFormat.format(dHistory.get(position).getWaitingtime());
 
 
-
-    Picasso.with(context).load( Uri.parse(dHistory.get(position).getDriverdp())).resize(150,150).centerCrop().into(holder.driverdp);
-
+    if (dHistory.get(position).getDriverdp()!=null) {
+        Picasso.with(context).load(Uri.parse(dHistory.get(position).getDriverdp())).resize(150, 150).centerCrop().into(holder.driverdp);
+    }
     holder.mName.setText(dHistory.get(position).getDrivername());
         holder.mPickup.setText(dHistory.get(position).getPickupaddress());
         holder.mDrop.setText(dHistory.get(position).getDropaddress());
