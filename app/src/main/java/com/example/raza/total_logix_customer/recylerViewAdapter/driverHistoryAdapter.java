@@ -19,6 +19,7 @@ import com.example.raza.total_logix_customer.DTO.customerHistory;
 import com.example.raza.total_logix_customer.DTO.driverRating;
 import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.activities.HomeActivity;
+import com.example.raza.total_logix_customer.fragment.historyFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -164,6 +165,9 @@ public class driverHistoryAdapter extends RecyclerView.Adapter<driverHistoryAdap
 
 
                                     myDialog.dismiss();
+
+                                    notifyDataSetChanged();
+
                                 }
                             });
 

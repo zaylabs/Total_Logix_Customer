@@ -2,6 +2,7 @@ package com.example.raza.total_logix_customer.fragment;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import com.example.raza.total_logix_customer.DTO.dropLocationDTO;
 import com.example.raza.total_logix_customer.DTO.userProfile;
 import com.example.raza.total_logix_customer.R;
 import com.example.raza.total_logix_customer.activities.HomeActivity;
+import com.example.raza.total_logix_customer.activities.LoginActivity;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -200,7 +202,14 @@ public class customerRequestFragment extends android.app.Fragment {
             }
         });
 
+            mCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    startActivity(intent);
 
+                }
+            });
         return view;
     }
     private void addItemOnCargo() {

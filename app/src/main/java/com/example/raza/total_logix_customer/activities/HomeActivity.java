@@ -728,6 +728,7 @@ public class HomeActivity extends AppCompatActivity
                 mAuth.addAuthStateListener(firebaseAuthListener);
                 mHeader.setVisibility(View.VISIBLE);
                 mFooter.setVisibility(View.VISIBLE);
+                getSupportActionBar().setTitle("Home");
                 mDropLocation.clear();
                 mDropAdapter.notifyDataSetChanged();
                 if (!sMapFragment.isAdded()) {
@@ -783,7 +784,7 @@ public class HomeActivity extends AppCompatActivity
                 mHeader.setVisibility(GONE);
                 mFooter.setVisibility(GONE);
 
-                getSupportActionBar().setTitle("Walled");
+                getSupportActionBar().setTitle("Wallet");
                 ft.replace(R.id.cm, new walletFragment());
                 ft.commit();
                 break;
